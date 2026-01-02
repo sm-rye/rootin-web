@@ -1,1 +1,9 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+button {
+  cursor: pointer;
+}
+
+input:focus {
+  outline: none;
+}
