@@ -1,57 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import type { Task, RoutineInfo } from '../model/types';
-import TaskAddForm from './TaskAddForm';
+import TasksList from './TasksList';
+import useCreateRoutines from '../model/useCreateRoutines';
+import useCreateTasks from '../model/useCreateTasks';
 
 export default function RoutinesAddForm() {
-  const MAX_TASK = 5;
-  const DEFAULT_DURATION = 7;
+  const { routineInfo, changeRoutineInput } = useCreateRoutines();
 
-  const [routineInfo, setRoutineInfo] = useState<RoutineInfo>({
-    title: '',
-    description: '',
-    duration_days: DEFAULT_DURATION,
-  });
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  const addTask = () => {
-    if (tasks.length >= MAX_TASK) {
-      window.alert(`${MAX_TASK}개 까지만 등록가능`);
-      return;
-    }
-
-    const newTask = { name: '', sort_order: tasks ? tasks.length + 1 : 1 };
-
-    if (!tasks) {
-      setTasks([newTask]);
-    } else {
-      setTasks((prev) => {
-        console.log(prev);
-        return [...prev, newTask];
-      });
-    }
-  };
-
-  const changeTaskName = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    currTask: number,
-  ) => {
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.sort_order === currTask ? { ...t, name: e.target.value } : t,
-      ),
-    );
-  };
-
-  const changeRoutineInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, id } = e.target;
-    setRoutineInfo((prev) => ({ ...prev, [id]: value }));
-  };
+  const { tasks, addTask, deleteTask, changeTaskName } = useCreateTasks();
 
   const submitRoutine = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(tasks);
-    console.log(routineInfo);
+
+    if (tasks.length < 1) {
+      window.alert('하나 이상의 task를 등록해주세요');
+      return;
+    }
+    const emptyTasks = tasks.filter((t) => t.name.trim() === '');
+
+    if (emptyTasks.length > 0) {
+      window.alert('작성되지 않은 task를 확인해주세요');
+      return;
+    }
+
+    const routine = { tasks, ...routineInfo };
+    console.log(routine);
   };
 
   return (
@@ -95,10 +68,11 @@ export default function RoutinesAddForm() {
           </button>
           {tasks &&
             tasks.map((t) => (
-              <TaskAddForm
+              <TasksList
                 key={t.sort_order}
                 task={t}
                 changeTaskName={changeTaskName}
+                deleteTask={deleteTask}
               />
             ))}
         </div>
