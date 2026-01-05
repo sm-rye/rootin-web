@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RoutinesAddForm } from '@/features/add-routine';
+import { RoutinesAddForm } from '@/features/routine-add';
 
 export default function RoutinesAddPage() {
   return (
