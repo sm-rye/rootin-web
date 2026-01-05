@@ -8,3 +8,7 @@ export interface Task {
   name: string;
   sort_order: number;
 }
+
+export type Routine = {
+  tasks: Task[];
+} & RoutineInfo;

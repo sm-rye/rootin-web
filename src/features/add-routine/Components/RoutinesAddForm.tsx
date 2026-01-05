@@ -3,19 +3,22 @@ import React from 'react';
 import TasksList from './TasksList';
 import useCreateRoutines from '../model/useCreateRoutines';
 import useCreateTasks from '../model/useCreateTasks';
+import { addRoutine } from '../api';
 
 export default function RoutinesAddForm() {
   const { routineInfo, changeRoutineInput } = useCreateRoutines();
 
   const { tasks, addTask, deleteTask, changeTaskName } = useCreateTasks();
 
-  const submitRoutine = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitRoutine = async (e: React.FormEvent<HTMLFormElement>) => {
+    // todo :  validation , api 통신
     e.preventDefault();
 
     if (tasks.length < 1) {
       window.alert('하나 이상의 task를 등록해주세요');
       return;
     }
+
     const emptyTasks = tasks.filter((t) => t.name.trim() === '');
 
     if (emptyTasks.length > 0) {
@@ -24,7 +27,8 @@ export default function RoutinesAddForm() {
     }
 
     const routine = { tasks, ...routineInfo };
-    console.log(routine);
+
+    const res = await addRoutine(routine);
   };
 
   return (
