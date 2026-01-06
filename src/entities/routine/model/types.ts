@@ -32,3 +32,7 @@ export type Routine = {
 export type NewRoutine = {
   tasks: Task[];
 } & RoutineInfo;
+
+export interface AllRoutineResponse {
+  routines: Routine[];
+}
