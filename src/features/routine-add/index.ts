@@ -1,3 +1,3 @@
-import RoutinesAddForm from './Components/RoutinesAddForm';
+import RoutineCreateForm from './Components/RoutineCreateForm';
 
-export { RoutinesAddForm };
+export { RoutineCreateForm };

@@ -5,7 +5,7 @@ import useCreateRoutines from '../model/useCreateRoutines';
 import useCreateTasks from '../model/useCreateTasks';
 import { addRoutine } from '../api';
 
-export default function RoutinesAddForm() {
+export default function RoutineCreateForm() {
   const { routineInfo, changeRoutineInput } = useCreateRoutines();
 
   const { tasks, addTask, deleteTask, changeTaskName } = useCreateTasks();

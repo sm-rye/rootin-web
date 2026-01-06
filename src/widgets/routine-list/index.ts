@@ -1,3 +1,3 @@
-import RoutinesList from './Components/RoutinesList';
+import RoutineList from './Components/RoutineList';
 
-export { RoutinesList };
+export { RoutineList };

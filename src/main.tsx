@@ -4,17 +4,22 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import RoutinesAddPage from './Pages/Routines/RoutinesAddPage';
-import RoutinesPage from './Pages/Routines/RoutinesPage';
+import RoutineCreatePage from './Pages/Routine/RoutineCreatePage';
+import RoutinePage from './Pages/Routine/RoutinePage';
+import RoutineDetailPage from './Pages/Routine/RoutineDetailPage';
 
 const router = createBrowserRouter([
   {
     path: '/routines',
-    element: <RoutinesPage />,
+    element: <RoutinePage />,
   },
   {
     path: '/routines/new',
-    element: <RoutinesAddPage />,
+    element: <RoutineCreatePage />,
+  },
+  {
+    path: '/routines/:id',
+    element: <RoutineDetailPage />,
   },
 ]);
 const queryClient = new QueryClient();
