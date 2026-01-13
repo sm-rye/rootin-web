@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { DeleteRoutineBtn } from '@/features/routine-delete';
 
 export default function RoutineList() {
-  const { data, isError, isLoading } = useRoutines();
   const navigate = useNavigate();
+  const { data, isError, isLoading } = useRoutines();
 
   if (isError) return <div>error</div>;
 
