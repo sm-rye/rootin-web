@@ -1,13 +1,24 @@
 import React, { useEffect } from 'react';
-import { useUpdateRoutineForm } from '@/features/routine-update';
+import {
+  useUpdateRoutineForm,
+  useUpdateRoutine,
+} from '@/features/routine-update';
 import type { Routine } from '@/entities/routine';
 import { useUpdateTasks, TaskUpdateEditor } from '@/features/task-update';
 import { useCreateTasks, TaskAddEditor } from '@/features/task-add';
 
-export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
+export default function UpdateRoutineForm({
+  routine,
+  routine_id,
+}: {
+  routine: Routine;
+  routine_id: string | undefined;
+}) {
+  if (!routine_id) return <></>;
   const {
     isEditing,
     routineInfo,
+    setIsEditing,
     handleRoutineEditBtn,
     setRoutineInfo,
     handleRoutineInputChange,
@@ -29,6 +40,8 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
     deleteTask,
   } = useCreateTasks();
 
+  const { mutate, isSuccess } = useUpdateRoutine(routine_id);
+
   useEffect(() => {
     if (routine) {
       setRoutineInfo({
@@ -44,8 +57,20 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(routineInfo);
-    console.log([...upadtedTasks, ...newTasks]);
+
+    if (routine.id && routineInfo && routineInfo.id) {
+      mutate({
+        id: routine.id,
+        routine: {
+          ...routineInfo,
+          tasks: [...upadtedTasks, ...newTasks],
+        },
+      });
+    }
+
+    if (isSuccess) {
+      setIsEditing(false);
+    }
   };
 
   const getTasks = () => (isEditing ? upadtedTasks : routine.tasks || []);

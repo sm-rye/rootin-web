@@ -3,4 +3,6 @@ import useUpdateRoutineForm from './model/useUpdateRoutineForm';
 
 import UpdateRoutineForm from './Components/UpdateRoutineForm';
 
+export * from './api';
+
 export { UpdateRoutineForm, useUpdateRoutine, useUpdateRoutineForm };

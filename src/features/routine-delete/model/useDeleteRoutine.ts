@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteRoutine } from '../api';
 
-export default function useDeleteRoutine(id: number) {
+export default function useDeleteRoutine() {
   const queryClient = useQueryClient();
 
   return useMutation({

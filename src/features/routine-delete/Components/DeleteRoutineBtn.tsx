@@ -6,7 +6,7 @@ interface DeleteRoutineBtnProps {
 }
 
 export default function DeleteRoutineBtn({ id }: DeleteRoutineBtnProps) {
-  const { mutate, isPending } = useDeleteRoutine(id);
+  const { mutate, isPending } = useDeleteRoutine();
 
   const handleRoutineDelete = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,

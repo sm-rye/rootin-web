@@ -17,6 +17,7 @@ export default function useUpdateRoutineForm() {
 
   return {
     isEditing,
+    setIsEditing,
     routineInfo,
     handleRoutineEditBtn,
     setRoutineInfo,

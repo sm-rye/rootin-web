@@ -25,7 +25,9 @@ export default function TaskUpdateEditor({
     <div>
       <input
         readOnly={!isEditing}
-        onClick={() => handleTaskInputClick(task)}
+        onClick={() => {
+          if (isEditing) handleTaskInputClick(task);
+        }}
         value={currEditingTask ? editingTask?.name : task?.name}
         onChange={(e) => handleTaskInputChange(e, task.id!)}
         className={`border ${isEditing && 'hover:bg-red-100'}`}
