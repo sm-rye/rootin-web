@@ -1,3 +1,5 @@
+import type { Task } from '@/entities/task';
+
 export interface RoutineInfo {
   title: string;
   description?: string;
@@ -5,12 +7,6 @@ export interface RoutineInfo {
 
   start_date?: Date;
   daily_status?: DailyStatus[];
-}
-
-export interface Task {
-  name: string;
-  sort_order: number;
-  id?: number;
 }
 
 export interface Status {

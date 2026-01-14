@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRoutineDetail } from '@/entities/routine';
 
 import { TaskDailyList } from '@/widgets/task-daily-list';
+
+import { UpdateRoutineForm } from '@/features/routine-update';
 
 export default function RoutineDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -16,24 +18,7 @@ export default function RoutineDetailPage() {
 
   return (
     <article>
-      <h1>{routine.title}</h1>
-      <div>
-        <button>수정</button>
-      </div>
-
-      <p>설명 : {routine.description}</p>
-
-      <div>
-        <p>테스크 목록</p>
-        <ol>
-          {routine?.tasks?.map((t) => (
-            <li key={t.id}>
-              {t.sort_order} {t.name}
-            </li>
-          ))}
-        </ol>
-      </div>
-
+      <UpdateRoutineForm routine={routine} />
       <div className="flex flex-wrap">
         <TaskDailyList dailyTaskData={routine.daily_status} />
       </div>

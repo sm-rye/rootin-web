@@ -1,23 +1,30 @@
 import { useState } from 'react';
-import type { Task } from '@/entities/routine';
+import type { Task } from '@/entities/task';
 
 export default function useCreateTasks() {
   const MAX_TASK = 5;
 
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [savedTasks, setSavedTasks] = useState(0);
 
-  const addTask = () => {
-    if (tasks.length >= MAX_TASK) {
+  const addTask = (savedTasksLength: number | undefined = 0) => {
+    setSavedTasks(savedTasksLength);
+    const totalLength = savedTasksLength + tasks.length;
+
+    if (totalLength >= MAX_TASK) {
       window.alert(`${MAX_TASK}개 까지만 등록가능`);
       return;
     }
 
-    const newTask = { name: '', sort_order: tasks ? tasks.length + 1 : 1 };
+    // savedTasks 가 없으면 1부터 시작
+    // savedTasks 가 있으면 tasks + savedTasks 길이 + 1
+
+    const newTask = { name: '', sort_order: tasks ? totalLength + 1 : 1 };
     setTasks((prev) => [...prev, newTask]);
   };
 
   const deleteTask = (id: number) => {
-    if (tasks.length <= 1) {
+    if (!savedTasks && tasks.length <= 1) {
       window.alert('task는 최소 하나 이상 등록되어야함');
       return;
     }
@@ -42,3 +49,12 @@ export default function useCreateTasks() {
 
   return { tasks, addTask, deleteTask, changeTaskName };
 }
+
+// 해야할 것
+
+// 1. 기존 테스크의 길이를 기준으로 sort_oreder를 생성해야힘
+// 2. 기존 테스크의 길이 + 새 테스크 길이가 max를 넘어서는 안됨
+
+// 필요한 값
+
+// 1. 기존 테스크의 길이

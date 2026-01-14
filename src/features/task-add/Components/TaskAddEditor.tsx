@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Task } from '@/entities/routine';
+import type { Task } from '@/entities/task';
 
-interface TaskEditorProps {
+interface TaskAddEditorProps {
   task?: Task | undefined;
   changeTaskName: (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -10,11 +10,11 @@ interface TaskEditorProps {
   deleteTask: (id: number) => void;
 }
 
-export default function TaskEditor({
+export default function TaskAddEditor({
   task,
   changeTaskName,
   deleteTask,
-}: TaskEditorProps) {
+}: TaskAddEditorProps) {
   if (!task) return <></>;
 
   return (

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import TaskEditor from './TaskEditor';
 import useCreateRoutines from '../model/useCreateRoutines';
-import useCreateTasks from '../model/useCreateTasks';
 import { addRoutine } from '../api';
+
+import { useCreateTasks, TaskAddEditor } from '@/features/task-add';
 
 export default function RoutineCreateForm() {
   const { routineInfo, changeRoutineInput } = useCreateRoutines();
@@ -72,7 +72,7 @@ export default function RoutineCreateForm() {
           </button>
           {tasks &&
             tasks.map((t) => (
-              <TaskEditor
+              <TaskAddEditor
                 key={t.sort_order}
                 task={t}
                 changeTaskName={changeTaskName}
