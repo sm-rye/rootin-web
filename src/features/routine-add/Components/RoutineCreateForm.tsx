@@ -4,6 +4,7 @@ import useCreateRoutines from '../model/useCreateRoutines';
 import { addRoutine } from '../api';
 
 import { useCreateTasks, TaskAddEditor } from '@/features/task-add';
+import { Input } from '@/shared/Components';
 
 export default function RoutineCreateForm() {
   const { routineInfo, changeRoutineInput } = useCreateRoutines();
@@ -27,6 +28,7 @@ export default function RoutineCreateForm() {
     }
 
     const routine = { tasks, ...routineInfo };
+    console.log(routine);
 
     const res = await addRoutine(routine);
   };
@@ -34,25 +36,19 @@ export default function RoutineCreateForm() {
   return (
     <form onSubmit={submitRoutine}>
       <div className="my-3">
-        <div>
-          <label htmlFor="title">루틴 이름</label>
-          <input
-            id="title"
-            className="border"
-            onChange={changeRoutineInput}
-            value={routineInfo.title}
-          />
-        </div>
+        <Input
+          inputId="title"
+          value={routineInfo.title}
+          inputName={'루틴 이름'}
+          onChange={changeRoutineInput}
+        />
 
-        <div>
-          <label htmlFor="description">설명</label>
-          <input
-            id="description"
-            className="border"
-            onChange={changeRoutineInput}
-            value={routineInfo.description}
-          />
-        </div>
+        <Input
+          inputId="description"
+          value={routineInfo.description}
+          inputName={'설명'}
+          onChange={changeRoutineInput}
+        />
 
         <div>
           <label htmlFor="duration_days">루틴 기간</label>

@@ -8,15 +8,19 @@ import { Outlet } from 'react-router-dom';
 
 export default function BaseLayout() {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen ">
       <Header />
-      <div>
-        <Sidebar />
+      <div className="flex-1 flex">
+        <aside className="hidden md:block w-64 border-r">
+          <Sidebar />
+        </aside>
         <main>
           <Outlet />
         </main>
       </div>
-      <FooterNav />
+      <footer className="block lg:hidden sticky bottom-0 z-50">
+        <FooterNav />
+      </footer>
     </div>
   );
 }

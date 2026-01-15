@@ -1,9 +1,42 @@
 @import 'tailwindcss';
 
+@layer base {
+  html,
+  body {
+    /* 스크롤 시 튕김 현상 방지 및 기본 폰트 설정 */
+    @apply m-0 p-0 overflow-x-hidden;
+    height: 100%;
+  }
+
+  /* 폰트 설정 (원하는 폰트가 있다면) */
+  body {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+  }
+}
+
+/* Chrome, Safari, Edge */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db; /* gray-300 */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af; /* gray-400 */
+}
+
 button {
   cursor: pointer;
 }
 
+button:focus,
 input:focus {
   outline: none;
 }

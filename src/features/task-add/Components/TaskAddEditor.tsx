@@ -1,6 +1,8 @@
 import React from 'react';
 import type { Task } from '@/entities/task';
 
+import { Input } from '@/shared/Components';
+
 interface TaskAddEditorProps {
   task?: Task | undefined;
   changeTaskName: (
@@ -20,10 +22,16 @@ export default function TaskAddEditor({
   return (
     <div>
       <span>{task.sort_order || 1}.</span>
-      <input
-        value={task.name || ''}
-        onChange={(e) => changeTaskName(e, task?.sort_order)}
+
+      <Input
+        inputId="description"
+        value={task.name}
+        inputName={'설명'}
+        onChange={(e) => {
+          changeTaskName(e, task?.sort_order);
+        }}
       />
+
       <button
         type="button"
         onClick={() => {
