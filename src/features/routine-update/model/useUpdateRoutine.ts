@@ -2,7 +2,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { updateRoutine } from '@/features/routine-update';
 import type { Routine } from '@/entities/routine';
 
-export default function useUpdateRoutine(id: string) {
+export default function useUpdateRoutine() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, routine }: { id: number; routine: Routine }) =>

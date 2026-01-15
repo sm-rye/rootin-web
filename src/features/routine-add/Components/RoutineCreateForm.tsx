@@ -67,7 +67,7 @@ export default function RoutineCreateForm() {
 
         <div>
           <label htmlFor="task">테스크</label>
-          <button type="button" onClick={addTask}>
+          <button type="button" onClick={() => addTask()}>
             테스크 추가
           </button>
           {tasks &&

@@ -18,7 +18,7 @@ export default function RoutineDetailPage() {
 
   return (
     <article>
-      <UpdateRoutineForm routine={routine} routine_id={id} />
+      <UpdateRoutineForm routine={routine} />
       <div className="flex flex-wrap">
         <TaskDailyList dailyTaskData={routine.daily_status} />
       </div>

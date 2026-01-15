@@ -7,14 +7,7 @@ import type { Routine } from '@/entities/routine';
 import { useUpdateTasks, TaskUpdateEditor } from '@/features/task-update';
 import { useCreateTasks, TaskAddEditor } from '@/features/task-add';
 
-export default function UpdateRoutineForm({
-  routine,
-  routine_id,
-}: {
-  routine: Routine;
-  routine_id: string | undefined;
-}) {
-  if (!routine_id) return <></>;
+export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
   const {
     isEditing,
     routineInfo,
@@ -40,7 +33,7 @@ export default function UpdateRoutineForm({
     deleteTask,
   } = useCreateTasks();
 
-  const { mutate, isSuccess } = useUpdateRoutine(routine_id);
+  const { mutate, isSuccess } = useUpdateRoutine();
 
   useEffect(() => {
     if (routine) {
