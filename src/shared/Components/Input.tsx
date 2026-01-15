@@ -35,16 +35,8 @@ export default function Input({
         id={inputId}
         placeholder={placeholder || ''}
         className={`border border-red-300 ${className}`}
-        onChange={(e) => {
-          if (onChange) {
-            onChange(e);
-          }
-        }}
-        onClick={() => {
-          if (onClick) {
-            onClick();
-          }
-        }}
+        onChange={(e) => onChange?.(e)}
+        onClick={() => onClick?.()}
         value={value}
       />
     </div>

@@ -14,7 +14,7 @@ export default function BaseLayout() {
         <aside className="hidden md:block w-64 border-r">
           <Sidebar />
         </aside>
-        <main>
+        <main className="flex-1">
           <Outlet />
         </main>
       </div>

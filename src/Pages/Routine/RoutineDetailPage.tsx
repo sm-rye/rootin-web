@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRoutineDetail } from '@/entities/routine';
 
 import { TaskDailyList } from '@/widgets/task-daily-list';
 
 import { UpdateRoutineForm } from '@/features/routine-update';
+
+import { DeleteRoutineBtn } from '@/features/routine-delete';
 
 export default function RoutineDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +23,9 @@ export default function RoutineDetailPage() {
       <div className="flex flex-wrap">
         <TaskDailyList dailyTaskData={routine.daily_status} />
       </div>
+      <footer className="w-full flex justify-center">
+        <DeleteRoutineBtn id={routine.id} />
+      </footer>
     </article>
   );
 }
