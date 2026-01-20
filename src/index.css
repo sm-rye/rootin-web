@@ -1,5 +1,26 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'NanumHuman';
+
+  src: url('/src/assets/fonts/NanumHumanRegular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@theme {
+  /* --font-display: 'Satoshi', 'sans-serif';
+  --breakpoint-3xl: 120rem;
+  
+ --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);*/
+  --font-display: 'NanumHuman', 'sans-serif';
+  --color-primary: var(--primary-color);
+  --color-primary-black: var(--text-color);
+  --color-secondary-black: var(--text-secondary-color);
+  --color-secondary-white: var(--white-secondary-color);
+}
+
 @layer base {
   html,
   body {
@@ -10,8 +31,39 @@
 
   /* 폰트 설정 (원하는 폰트가 있다면) */
   body {
-    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-family:
+      'NanumHuman',
+      -apple-system,
+      sans-serif;
   }
+}
+
+:root {
+  --primary-color: #ea4c89;
+
+  --white-secondary-color: #fbfbfb;
+
+  --text-color: #252525;
+  --text-secondary-color: #444444;
+
+  --bg-color: #f4f4f4;
+  --secondary-bg-color: #fbfbfb;
+  --secondary-color: rgb(244, 244, 239);
+
+  --point-color: rgb(192, 22, 22);
+}
+
+.dark-theme {
+  --primary-color: rgb(21, 0, 75);
+  --secondary-color: rgb(84, 76, 102);
+  --point-color: rgb(240, 255, 72);
+  --text-color: white;
+}
+
+body {
+  transition:
+    background-color 0.3s,
+    color 0.3s; /* 부드러운 전환 효과 */
 }
 
 /* Chrome, Safari, Edge */
@@ -37,6 +89,14 @@ button {
 }
 
 button:focus,
-input:focus {
+input:focus,
+select:focus {
   outline: none;
+}
+
+/*   <input class="accent-pink-500" type="checkbox" checked />
+ */
+input[type='checkbox'] {
+  /* 체크되었을 때의 강조 색상 변경 */
+  accent-color: var(--point-color); /* 빨간 계열 */
 }

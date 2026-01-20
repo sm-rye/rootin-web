@@ -24,7 +24,7 @@ export default function TaskUpdateEditor({
 }: TaskUpdateEditorProps) {
   const currEditingTask = editingTask?.id === task.id;
   return (
-    <div>
+    <div className="flex">
       <Input
         readOnly={!isEditing}
         value={currEditingTask ? editingTask?.name : task?.name}

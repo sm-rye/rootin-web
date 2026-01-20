@@ -6,6 +6,9 @@ import { TaskDailyList } from '@/widgets/task-daily-list';
 import { UpdateRoutineForm } from '@/features/routine-update';
 
 import { DeleteRoutineBtn } from '@/features/routine-delete';
+import { Button } from '@/shared/Components';
+
+import dayjs from 'dayjs';
 
 export default function RoutineDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -17,9 +20,26 @@ export default function RoutineDetailPage() {
 
   if (!routine) return <></>;
 
+  const today = dayjs().format('YYYY-MM-DD');
+
+  console.log(today);
+
+  const todayTask = routine.daily_status?.filter((d) => d.date === today);
+
+  console.log(todayTask);
   return (
-    <article>
-      <UpdateRoutineForm routine={routine} />
+    <article className="flex flex-col gap-2">
+      {/* <UpdateRoutineForm routine={routine} /> */}
+      <header className="flex justify-between p-3 items-center ">
+        <div>루틴목록으로 돌아가기</div>
+        <Button>
+          <p>수정</p>
+        </Button>
+      </header>
+      <div>
+        <h1 className="text-2xl">{routine.title}</h1>
+        <p>{routine.description}</p>
+      </div>
       <div className="flex flex-wrap">
         <TaskDailyList dailyTaskData={routine.daily_status} />
       </div>

@@ -4,7 +4,7 @@ import type { Task } from '@/entities/task';
 export default function useCreateTasks() {
   const MAX_TASK = 5;
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([{ name: '', sort_order: 1 }]);
   const [savedTasks, setSavedTasks] = useState(0);
 
   const addTask = (savedTasksLength: number | undefined = 0) => {
@@ -15,9 +15,6 @@ export default function useCreateTasks() {
       window.alert(`${MAX_TASK}개 까지만 등록가능`);
       return;
     }
-
-    // savedTasks 가 없으면 1부터 시작
-    // savedTasks 가 있으면 tasks + savedTasks 길이 + 1
 
     const newTask = { name: '', sort_order: tasks ? totalLength + 1 : 1 };
     setTasks((prev) => [...prev, newTask]);

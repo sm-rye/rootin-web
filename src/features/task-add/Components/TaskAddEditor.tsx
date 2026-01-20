@@ -19,18 +19,33 @@ export default function TaskAddEditor({
 }: TaskAddEditorProps) {
   if (!task) return <></>;
 
-  return (
-    <div>
-      <span>{task.sort_order || 1}.</span>
+  const changeNumToKorean = (num: number) => {
+    switch (num) {
+      case 1:
+        return `첫`;
+      case 2:
+        return '두';
+      case 3:
+        return '세';
+      case 4:
+        return '네';
+      case 5:
+        return '다섯';
+    }
+  };
 
-      <Input
-        inputId="description"
-        value={task.name}
-        inputName={'설명'}
-        onChange={(e) => {
-          changeTaskName(e, task?.sort_order);
-        }}
-      />
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex-1">
+        <Input
+          inputId="description"
+          value={task.name}
+          onChange={(e) => {
+            changeTaskName(e, task?.sort_order);
+          }}
+          placeHolder={`${changeNumToKorean(task.sort_order)} 번째 실천 행동`}
+        />
+      </div>
 
       <button
         type="button"

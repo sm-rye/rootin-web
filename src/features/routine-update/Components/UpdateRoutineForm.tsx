@@ -7,7 +7,7 @@ import type { Routine } from '@/entities/routine';
 import { useUpdateTasks, TaskUpdateEditor } from '@/features/task-update';
 import { useCreateTasks, TaskAddEditor } from '@/features/task-add';
 
-import { Input } from '@/shared/Components';
+import { Button, Input } from '@/shared/Components';
 
 export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
   const {
@@ -73,15 +73,16 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <button onClick={handleRoutineEditBtn} type="button">
+        <Button onClick={handleRoutineEditBtn} type="button">
           수정
-        </button>
+        </Button>
         {isEditing && <button type="submit">저장</button>}
       </div>
 
       <Input
         readOnly={!isEditing}
         inputId="title"
+        inputName="이름"
         value={!isEditing ? routine.title : routineInfo?.title}
         onChange={handleRoutineInputChange}
       />
@@ -89,6 +90,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
       <Input
         readOnly={!isEditing}
         inputId="description"
+        inputName="설명"
         value={!isEditing ? routine.description : routineInfo?.description}
         onChange={handleRoutineInputChange}
       />

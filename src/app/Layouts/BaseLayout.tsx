@@ -11,7 +11,7 @@ export default function BaseLayout() {
     <div className="flex flex-col min-h-screen ">
       <Header />
       <div className="flex-1 flex">
-        <aside className="hidden md:block w-64 border-r">
+        <aside className="hidden md:block w-64 border-r border-gray-200">
           <Sidebar />
         </aside>
         <main className="flex-1">

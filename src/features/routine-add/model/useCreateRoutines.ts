@@ -13,9 +13,6 @@ export default function useCreateRoutines() {
   const changeRoutineInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
 
-    if (id === 'duration_days') {
-      console.log(typeof value);
-    }
     setRoutineInfo((prev) => ({
       ...prev,
       [id]: id === 'duration_days' ? Number(value) : value,
