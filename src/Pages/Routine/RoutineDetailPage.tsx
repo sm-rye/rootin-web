@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useRoutineDetail } from '@/entities/routine';
-import { Loading, Error, Empty, PageHeader } from '@/shared/Components';
+import { Loading, Error, Empty } from '@/shared/Components';
 import { RoutineDetailHeader } from '@/widgets/routine-detail';
 
 import { UpdateRoutineForm } from '@/features/routine-update';
 
 import { TaskRingDisplay } from '@/widgets/task-ring';
-import { TaskCheckBox } from '@/features/task-toggle';
-import useDailyToggleTask from '@/features/task-toggle/model/useDailyToggleTask';
+import { TaskCheckBox, useDailyToggleTask } from '@/features/task-toggle';
 
 export default function RoutineDetailPage() {
   const [isEditingRoutine, setIsEditingRoutine] = useState(false);

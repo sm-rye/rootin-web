@@ -4,7 +4,8 @@ import {
   RoutineCreatePage,
   RoutinePage,
   RoutineDetailPage,
-} from '@/Pages/Routine';
+  AuhtPage,
+} from '@/Pages';
 
 import BaseLayout from '../Layouts/BaseLayout';
 
@@ -28,4 +29,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  { path: '/auth', element: <AuhtPage /> },
 ]);

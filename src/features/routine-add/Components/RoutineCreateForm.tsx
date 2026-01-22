@@ -3,7 +3,7 @@ import React from 'react';
 import useCreateRoutines from '../model/useCreateRoutines';
 import { addRoutine } from '../api';
 
-import { useCreateTasks, TaskAddEditor } from '@/features/task-add';
+import { useCreateTasks, TaskEditor } from '@/features/task-add';
 import { Input, Button, Label, FormElement } from '@/shared/Components';
 
 export default function RoutineCreateForm() {
@@ -85,10 +85,10 @@ export default function RoutineCreateForm() {
             </Button>
             {tasks &&
               tasks.map((t) => (
-                <TaskAddEditor
+                <TaskEditor
                   key={t.sort_order}
                   task={t}
-                  changeTaskName={changeTaskName}
+                  onChangeTaskInput={changeTaskName}
                   deleteTask={deleteTask}
                 />
               ))}
