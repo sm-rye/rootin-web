@@ -1,56 +1,30 @@
 import React, { useEffect } from 'react';
-import {
-  useUpdateRoutineForm,
-  useUpdateRoutine,
-} from '@/features/routine-update';
-import type { Routine } from '@/entities/routine';
-import { useUpdateTasks, TaskUpdateEditor } from '@/features/task-update';
-import { useCreateTasks, TaskAddEditor } from '@/features/task-add';
 
-import { Button, Input } from '@/shared/Components';
+import type { Routine } from '@/entities/routine';
+import { DeleteRoutineBtn } from '@/features/routine-delete';
+import {
+  Button,
+  Input,
+  Label,
+  FormElement,
+  InfoText,
+} from '@/shared/Components';
+import {
+  useUpdateRoutine,
+  useUpdateRoutineForm,
+} from '@/features/routine-update';
+import { TaskCreateBtn, TaskEditor, useCreateTasks } from '@/features/task-add';
+import { useNavigate } from 'react-router-dom';
 
 export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
-  const {
-    isEditing,
-    routineInfo,
-    setIsEditing,
-    handleRoutineEditBtn,
-    setRoutineInfo,
-    handleRoutineInputChange,
-  } = useUpdateRoutineForm();
+  const navigate = useNavigate();
+  const { routineInfo, setRoutineInfo, handleRoutineInputChange } =
+    useUpdateRoutineForm();
+  const { tasks, changeTaskName, setTasks, deleteTask, addTask } =
+    useCreateTasks();
+  const { mutate, isSuccess, isPending } = useUpdateRoutine();
 
-  const {
-    editingTask,
-    tasks: upadtedTasks,
-    setTasks,
-    handleTaskInputChange,
-    handleTaskInputClick,
-    handleTaskEditingComplete,
-  } = useUpdateTasks();
-
-  const {
-    tasks: newTasks,
-    addTask,
-    changeTaskName,
-    deleteTask,
-  } = useCreateTasks();
-
-  const { mutate, isSuccess } = useUpdateRoutine();
-
-  useEffect(() => {
-    if (routine) {
-      setRoutineInfo({
-        title: routine.title,
-        description: routine.description,
-        id: routine.id,
-      });
-      if (routine.tasks) {
-        setTasks(routine.tasks);
-      }
-    }
-  }, [routine]);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (routine.id && routineInfo && routineInfo.id) {
@@ -58,73 +32,75 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
         id: routine.id,
         routine: {
           ...routineInfo,
-          tasks: [...upadtedTasks, ...newTasks],
+          tasks,
         },
       });
     }
-
     if (isSuccess) {
-      setIsEditing(false);
+      window.alert('성공');
     }
   };
 
-  const getTasks = () => (isEditing ? upadtedTasks : routine.tasks || []);
+  useEffect(() => {
+    if (routine) {
+      setRoutineInfo({
+        ...routine,
+      });
+      if (routine.tasks) {
+        setTasks(routine.tasks);
+      }
+    }
+  }, [routine]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <Button onClick={handleRoutineEditBtn} type="button">
-          수정
-        </Button>
-        {isEditing && <button type="submit">저장</button>}
+    <form
+      onSubmit={handleUpdateSubmit}
+      className="flex flex-col w-full h-full max-w-4xl"
+    >
+      <div className="flex-1">
+        <Input
+          inputId="title"
+          inputName="이름"
+          value={routineInfo?.title}
+          onChange={handleRoutineInputChange}
+        />
+        <Input
+          inputId="description"
+          inputName="설명"
+          value={routineInfo?.description}
+          onChange={handleRoutineInputChange}
+        />
+        <Input
+          inputId="duration_days"
+          type="number"
+          value={routineInfo?.duration_days}
+          inputName={'기간'}
+          inputNextText={'일 동안 반복'}
+          onChange={handleRoutineInputChange}
+          placeHolder={'루틴에 대한 설명이나 목표를 적어보세요.'}
+          className="w-38"
+          helperText="1~100일 사이의 숫자를 입력해주세요."
+        />
+        <FormElement hasMargin>
+          <>
+            <Label inputName="실천 행동 수정" />
+            <TaskCreateBtn addTask={addTask} />
+            <InfoText text="실천 행동 수정 시 기존 기록에 영향을 줄 수 있습니다." />
+
+            {tasks.map((t) => (
+              <TaskEditor
+                task={t}
+                onChangeTaskInput={changeTaskName}
+                deleteTask={deleteTask}
+              />
+            ))}
+          </>
+        </FormElement>
       </div>
-
-      <Input
-        readOnly={!isEditing}
-        inputId="title"
-        inputName="이름"
-        value={!isEditing ? routine.title : routineInfo?.title}
-        onChange={handleRoutineInputChange}
-      />
-
-      <Input
-        readOnly={!isEditing}
-        inputId="description"
-        inputName="설명"
-        value={!isEditing ? routine.description : routineInfo?.description}
-        onChange={handleRoutineInputChange}
-      />
-
-      <div>
-        <p>테스크를 수정할 경우, 기존 기록에 영향을 줄 수 있읍니다 </p>
-        {getTasks().map((t) => (
-          <TaskUpdateEditor
-            isEditing={isEditing}
-            key={t.id || t.sort_order}
-            task={t}
-            editingTask={editingTask}
-            handleTaskInputChange={handleTaskInputChange}
-            handleTaskInputClick={handleTaskInputClick}
-            handleTaskEditingComplete={handleTaskEditingComplete}
-          />
-        ))}
-        {isEditing && (
-          <div>
-            <button type="button" onClick={() => addTask(upadtedTasks.length)}>
-              테스크 추가
-            </button>
-          </div>
-        )}
-        {newTasks.map((t) => {
-          return (
-            <TaskAddEditor
-              task={t}
-              changeTaskName={changeTaskName}
-              deleteTask={deleteTask}
-            />
-          );
-        })}
-      </div>
+      <footer className="flex justify-center items-center">
+        <Button type="submit">{isPending ? '저장중' : '저장'}</Button>
+        <DeleteRoutineBtn id={routine.id} />
+      </footer>
     </form>
   );
 }

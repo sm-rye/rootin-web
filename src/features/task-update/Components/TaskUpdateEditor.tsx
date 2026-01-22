@@ -4,7 +4,6 @@ import React from 'react';
 import { Input } from '@/shared/Components';
 
 interface TaskUpdateEditorProps {
-  isEditing: boolean;
   task: Task;
   editingTask: Task | undefined;
   handleTaskInputChange: (
@@ -15,32 +14,25 @@ interface TaskUpdateEditorProps {
   handleTaskEditingComplete: () => void;
 }
 export default function TaskUpdateEditor({
-  isEditing,
   task,
   editingTask,
-  handleTaskInputChange,
-  handleTaskInputClick,
+  // handleTaskInputChange,
+  // handleTaskInputClick,
   handleTaskEditingComplete,
 }: TaskUpdateEditorProps) {
   const currEditingTask = editingTask?.id === task.id;
+
   return (
     <div className="flex">
       <Input
-        readOnly={!isEditing}
         value={currEditingTask ? editingTask?.name : task?.name}
-        inputId="description"
-        onChange={(e) => handleTaskInputChange(e, task.id!)}
-        onClick={() => {
-          if (isEditing) handleTaskInputClick(task);
-        }}
-        className={`border ${isEditing && 'hover:bg-red-100'}`}
+        inputId="task"
+        // onChange={(e) => handleTaskInputChange(e, task.id!)}
+        // onClick={() => {
+        //   handleTaskInputClick(task);
+        // }}
+        className={`border hover:bg-red-100'}`}
       />
-
-      {isEditing && currEditingTask && (
-        <button type="button" onClick={handleTaskEditingComplete}>
-          완료
-        </button>
-      )}
       <button type="button">삭제</button>
     </div>
   );

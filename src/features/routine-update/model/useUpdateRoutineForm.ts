@@ -7,7 +7,7 @@ export default function useUpdateRoutineForm() {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleRoutineEditBtn = () => {
-    setIsEditing(true);
+    setIsEditing((prev) => !prev);
   };
 
   const handleRoutineInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

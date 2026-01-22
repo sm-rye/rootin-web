@@ -7,16 +7,14 @@ export default function useCreateTasks() {
   const [tasks, setTasks] = useState<Task[]>([{ name: '', sort_order: 1 }]);
   const [savedTasks, setSavedTasks] = useState(0);
 
-  const addTask = (savedTasksLength: number | undefined = 0) => {
-    setSavedTasks(savedTasksLength);
-    const totalLength = savedTasksLength + tasks.length;
-
-    if (totalLength >= MAX_TASK) {
+  const addTask = () => {
+    if (tasks.length >= MAX_TASK) {
       window.alert(`${MAX_TASK}개 까지만 등록가능`);
       return;
     }
 
-    const newTask = { name: '', sort_order: tasks ? totalLength + 1 : 1 };
+    const newTask = { name: '', sort_order: tasks ? tasks.length + 1 : 1 };
+
     setTasks((prev) => [...prev, newTask]);
   };
 
@@ -44,7 +42,7 @@ export default function useCreateTasks() {
     );
   };
 
-  return { tasks, addTask, deleteTask, changeTaskName };
+  return { tasks, addTask, deleteTask, changeTaskName, setTasks };
 }
 
 // 해야할 것

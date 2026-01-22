@@ -5,6 +5,7 @@ import FormElement from './FormElement';
 
 import { IoIosInformationCircle } from 'react-icons/io';
 
+import InfoText from '../Text/InfoText';
 interface InputProps {
   inputId: string;
   value: string | number | undefined;
@@ -53,14 +54,7 @@ export default function Input({
           {inputNextText && <p> {inputNextText}</p>}
         </div>
 
-        {helperText && (
-          <div className="flex items-center gap-1.5 text-primary">
-            <span>
-              <IoIosInformationCircle />
-            </span>
-            <p className="text-sm">{helperText}</p>
-          </div>
-        )}
+        {helperText && <InfoText text={helperText} />}
       </>
     </FormElement>
   );

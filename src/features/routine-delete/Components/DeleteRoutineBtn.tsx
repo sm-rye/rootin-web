@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDeleteRoutine } from '@/features/routine-delete';
+import { Button } from '@/shared/Components';
 
 interface DeleteRoutineBtnProps {
   id: number;
@@ -13,14 +14,13 @@ export default function DeleteRoutineBtn({ id }: DeleteRoutineBtnProps) {
   ) => {
     e.stopPropagation();
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      // 여기서 mutate를 호출하면 API가 실행됩니다!
       mutate(id);
     }
   };
 
   return (
-    <button className="border " onClick={handleRoutineDelete}>
+    <Button onClick={handleRoutineDelete} type="button" variant="outline">
       {isPending ? '삭제중' : '삭제'}
-    </button>
+    </Button>
   );
 }

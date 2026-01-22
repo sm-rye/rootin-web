@@ -2,12 +2,15 @@ import React from 'react';
 
 import type { Status } from '@/entities/routine';
 import { useToggleTask } from '@/features/task-toggle';
+import { Empty } from '@/shared/Components';
 
 export default function TaskStatusItem({
   task_id,
   isCompleted,
   date,
-}: Status & { date: string }) {
+  name,
+}: Status & { date: string; name: string | undefined }) {
+  if (!name) return <Empty />;
   const { mutate } = useToggleTask();
 
   const handleToggle = () => {
@@ -22,7 +25,7 @@ export default function TaskStatusItem({
         id={task_id.toString()}
         onChange={handleToggle}
       />
-      <label htmlFor={task_id.toString()}> {task_id}</label>
+      <label htmlFor={task_id.toString()}> {name}</label>
     </div>
   );
 }

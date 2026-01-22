@@ -23,7 +23,7 @@ export default function Button({
 }: ButtonProps) {
   // 기본 스타일
   const baseStyles =
-    'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+    'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none';
 
   // variant별 스타일
   const variantStyles = {
@@ -70,8 +70,7 @@ export default function Button({
     link: {
       primary:
         'text-primary underline-offset-4 hover:underline dark:text-primary-400',
-      secondary:
-        'text-gray-600 underline-offset-4 hover:underline dark:text-gray-400',
+      secondary: 'underline-offset-4 hover:underline ',
       danger:
         'text-red-600 underline-offset-4 hover:underline dark:text-red-400',
       success:

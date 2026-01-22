@@ -9,15 +9,15 @@ export interface RoutineInfo {
   daily_status?: DailyStatus[];
 }
 
-export interface Status {
+export type Status = {
   task_id: number;
   isCompleted: boolean;
-}
+};
 
 export interface DailyStatus {
   day: number;
   date: string;
-  status: Status[];
+  status: Status[] & Task[];
 }
 
 export type Routine = {

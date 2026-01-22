@@ -1,51 +1,55 @@
-import { useParams } from 'react-router-dom';
-import { useRoutineDetail } from '@/entities/routine';
+import React, { useState } from 'react';
 
-import { TaskDailyList } from '@/widgets/task-daily-list';
+import { useParams } from 'react-router-dom';
+
+import { useRoutineDetail } from '@/entities/routine';
+import { Loading, Error, Empty } from '@/shared/Components';
+import { RoutineDetailHeader } from '@/widgets/routine-detail';
 
 import { UpdateRoutineForm } from '@/features/routine-update';
 
-import { DeleteRoutineBtn } from '@/features/routine-delete';
-import { Button } from '@/shared/Components';
-
-import dayjs from 'dayjs';
+import { TaskRingDisplay } from '@/widgets/task-ring';
+import { TaskCheckBox } from '@/features/task-toggle';
+import useDailyToggleTask from '@/features/task-toggle/model/useDailyToggleTask';
 
 export default function RoutineDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const [isEditingRoutine, setIsEditingRoutine] = useState(false);
 
+  const { id } = useParams();
   const { data: routine, isLoading, isError } = useRoutineDetail(id!);
+  const { selectedDayTaskStaus, setSelectedDayTaskStaus } = useDailyToggleTask(
+    routine?.daily_status,
+  );
 
-  if (isLoading) return <div>상세 정보 로딩 중...</div>;
-  if (isError) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
+  if (isLoading) return <Loading />;
+  if (isError) return <Error />;
+  if (!routine) return <Empty />;
 
-  if (!routine) return <></>;
+  const { title } = routine;
 
-  const today = dayjs().format('YYYY-MM-DD');
-
-  console.log(today);
-
-  const todayTask = routine.daily_status?.filter((d) => d.date === today);
-
-  console.log(todayTask);
   return (
-    <article className="flex flex-col gap-2">
-      {/* <UpdateRoutineForm routine={routine} /> */}
-      <header className="flex justify-between p-3 items-center ">
-        <div>루틴목록으로 돌아가기</div>
-        <Button>
-          <p>수정</p>
-        </Button>
-      </header>
-      <div>
-        <h1 className="text-2xl">{routine.title}</h1>
-        <p>{routine.description}</p>
-      </div>
-      <div className="flex flex-wrap">
-        <TaskDailyList dailyTaskData={routine.daily_status} />
-      </div>
-      <footer className="w-full flex justify-center">
-        <DeleteRoutineBtn id={routine.id} />
-      </footer>
-    </article>
+    <div className="w-full h-full flex flex-col  gap-y-5 ">
+      <RoutineDetailHeader
+        title={title}
+        description={routine?.description}
+        isEditingRoutine={isEditingRoutine}
+        setIsEditingRoutine={setIsEditingRoutine}
+      />
+      {isEditingRoutine ? (
+        <UpdateRoutineForm routine={routine} />
+      ) : (
+        <>
+          <TaskRingDisplay
+            taskDailyStatus={routine?.daily_status}
+            selectedDayTaskStaus={selectedDayTaskStaus}
+            setSelectedDayTaskStaus={setSelectedDayTaskStaus}
+          />
+          <TaskCheckBox
+            selectedDayTaskStaus={selectedDayTaskStaus}
+            tasks={routine?.tasks}
+          />
+        </>
+      )}
+    </div>
   );
 }
