@@ -55,7 +55,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
   return (
     <form
       onSubmit={handleUpdateSubmit}
-      className="flex flex-col w-full h-full max-w-4xl"
+      className="flex flex-col w-full h-full max-w-4xl px-5"
     >
       <div className="flex-1">
         <Input
@@ -97,7 +97,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
           </>
         </FormElement>
       </div>
-      <footer className="flex justify-center items-center">
+      <footer className="flex justify-center items-center gap-x-3">
         <Button type="submit">{isPending ? '저장중' : '저장'}</Button>
         <DeleteRoutineBtn id={routine.id} />
       </footer>

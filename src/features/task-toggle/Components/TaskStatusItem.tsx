@@ -18,7 +18,7 @@ export default function TaskStatusItem({
   };
 
   return (
-    <div className="flex" key={task_id}>
+    <div className="flex gap-1.5 py-1" key={task_id}>
       <input
         type="checkbox"
         checked={isCompleted}

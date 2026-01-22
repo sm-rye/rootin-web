@@ -9,16 +9,15 @@
 }
 
 @theme {
-  /* --font-display: 'Satoshi', 'sans-serif';
-  --breakpoint-3xl: 120rem;
-  
- --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
-  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);*/
   --font-display: 'NanumHuman', 'sans-serif';
+
   --color-primary: var(--primary-color);
-  --color-primary-black: var(--text-color);
-  --color-secondary-black: var(--text-secondary-color);
-  --color-secondary-white: var(--white-secondary-color);
+  --color-foreground: var(--foreground-color);
+  --color-muted: var(--muted-color);
+  --color-background: var(--background--color);
+  --color-primary-border: var(--primary-border);
+
+  --color-primary-gray: var(--primary-border);
 }
 
 @layer base {
@@ -40,21 +39,15 @@
 
 :root {
   --primary-color: #ea4c89;
-
-  --white-secondary-color: #fbfbfb;
-
-  --text-color: #252525;
-  --text-secondary-color: #444444;
-
-  --bg-color: #f4f4f4;
-  --secondary-bg-color: #fbfbfb;
-  --secondary-color: rgb(244, 244, 239);
-
-  --point-color: rgb(192, 22, 22);
+  --foreground-color: #333333;
+  --muted-color: #9ba5a8;
+  --background--color: #fbfbfb;
+  --primary-border: #e5e7eb;
 }
 
 .dark-theme {
-  --primary-color: rgb(21, 0, 75);
+  --primary-color: #ea4c89;
+  --primary-border: #e5e7eb;
   --secondary-color: rgb(84, 76, 102);
   --point-color: rgb(240, 255, 72);
   --text-color: white;

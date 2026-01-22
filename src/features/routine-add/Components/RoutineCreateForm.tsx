@@ -36,7 +36,7 @@ export default function RoutineCreateForm() {
   return (
     <form
       onSubmit={submitRoutine}
-      className="flex flex-col w-full h-full max-w-4xl"
+      className="flex flex-col w-full h-full max-w-4xl mt-5"
     >
       <div className="flex-1">
         <Input

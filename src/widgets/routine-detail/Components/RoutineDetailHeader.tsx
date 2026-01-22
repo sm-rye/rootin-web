@@ -25,7 +25,7 @@ export default function RoutineDetailHeader({
 
   if (!isEditingRoutine)
     return (
-      <header className="flex justify-between items-center bg-white ">
+      <header className="flex justify-between items-center bg-white  max-h-40">
         <div className="flex flex-col gap-y-3">
           <h1 className="text-2xl">{title}</h1>
           {description && <p>{description}</p>}
@@ -46,12 +46,8 @@ export default function RoutineDetailHeader({
 
   if (isEditingRoutine)
     return (
-      <header className="flex justify-between items-center bg-white">
-        <Button
-          variant="link"
-          colorScheme="secondary"
-          onClick={handleCancelEdit}
-        >
+      <header className="flex items-center bg-white  ">
+        <Button variant="link" onClick={handleCancelEdit}>
           <span>
             <MdOutlineArrowBackIos />
           </span>

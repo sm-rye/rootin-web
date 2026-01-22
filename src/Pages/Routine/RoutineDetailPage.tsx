@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useRoutineDetail } from '@/entities/routine';
-import { Loading, Error, Empty } from '@/shared/Components';
+import { Loading, Error, Empty, PageHeader } from '@/shared/Components';
 import { RoutineDetailHeader } from '@/widgets/routine-detail';
 
 import { UpdateRoutineForm } from '@/features/routine-update';
@@ -28,7 +28,7 @@ export default function RoutineDetailPage() {
   const { title } = routine;
 
   return (
-    <div className="w-full h-full flex flex-col  gap-y-5 ">
+    <div className="w-full h-full flex flex-col  gap-y-10 p-5 lg:px-20 lg:py-10">
       <RoutineDetailHeader
         title={title}
         description={routine?.description}
@@ -36,9 +36,11 @@ export default function RoutineDetailPage() {
         setIsEditingRoutine={setIsEditingRoutine}
       />
       {isEditingRoutine ? (
-        <UpdateRoutineForm routine={routine} />
-      ) : (
         <>
+          <UpdateRoutineForm routine={routine} />
+        </>
+      ) : (
+        <div className="flex-1 flex flex-col gap-y-5">
           <TaskRingDisplay
             taskDailyStatus={routine?.daily_status}
             selectedDayTaskStaus={selectedDayTaskStaus}
@@ -48,7 +50,7 @@ export default function RoutineDetailPage() {
             selectedDayTaskStaus={selectedDayTaskStaus}
             tasks={routine?.tasks}
           />
-        </>
+        </div>
       )}
     </div>
   );
