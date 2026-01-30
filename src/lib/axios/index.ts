@@ -10,20 +10,19 @@ const api: AxiosInstance = axios.create({
   },
 });
 
-// 2. 요청(Request) 인터셉터
-// authApi.interceptors.request.use(
-//   (config) => {
-//     // 로컬 스토리지 등에서 토큰을 가져와 헤더에 삽입 (로그인 기능 구현 시)
-//     const token = localStorage.getItem('accessToken');
-//     if (token && config.headers) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-// );
+api.interceptors.request.use(
+  (config) => {
+    // 로컬 스토리지 등에서 토큰을 가져와 헤더에 삽입 (로그인 기능 구현 시)
+    const token = localStorage.getItem('token');
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 // // 3. 응답(Response) 인터셉터
 // authApi.interceptors.response.use(

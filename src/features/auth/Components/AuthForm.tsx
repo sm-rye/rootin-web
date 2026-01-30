@@ -15,7 +15,7 @@ export default function AuthForm({
 
   const { authFormData, onChangeAuthInput, removeNickname, setAuthFormData } =
     useAuthForm();
-  const { mutate, onError } = useAuth();
+  const { mutate } = useAuth();
 
   const handleAuthSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
