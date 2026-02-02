@@ -4,11 +4,12 @@ import { Header } from '@/widgets/layout-header';
 import { FooterNav } from '@/widgets/layout-footer';
 import { Sidebar } from '@/widgets/layout-sidebar';
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { authStore, useGetMe } from '@/entities/auth';
 
 export default function BaseLayout() {
+  const navigate = useNavigate();
   const { setAuth, logout } = authStore();
 
   // 1. 토큰 존재 여부 확인
@@ -18,6 +19,8 @@ export default function BaseLayout() {
   const { data, isSuccess, isError, isLoading } = useGetMe(!!token);
 
   useEffect(() => {
+    if (!token) navigate('/auth', { replace: true });
+
     if (isSuccess && data) {
       setAuth(data.user);
     }
@@ -26,6 +29,7 @@ export default function BaseLayout() {
       // 토큰이 유효하지 않은 경우 정리
       localStorage.removeItem('token');
       logout();
+      navigate('/auth', { replace: true });
     }
   }, [isSuccess, isError, data, setAuth, logout]);
 

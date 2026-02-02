@@ -27,13 +27,18 @@ export default function AuthForm({
   };
 
   return (
-    <form onSubmit={handleAuthSubmit}>
+    <form
+      onSubmit={handleAuthSubmit}
+      className="flex flex-col w-full max-w-[320px] mx-auto items-center"
+    >
       <Input
         inputName="Email"
         inputId="email"
         onChange={onChangeAuthInput}
         value={authFormData.email}
         type="email"
+        className="w-80"
+        placeHolder="이메일을 입력해주세요"
       />
       <Input
         inputName="Password"
@@ -41,6 +46,8 @@ export default function AuthForm({
         onChange={onChangeAuthInput}
         value={authFormData.password}
         type="password"
+        className="w-80"
+        placeHolder="비밀번호를 입력해주세요"
       />
 
       {isSignup && (
@@ -49,10 +56,11 @@ export default function AuthForm({
           inputId="nickname"
           onChange={onChangeAuthInput}
           value={authFormData.nickname}
+          className="w-80!"
+          placeHolder="닉네임을 입력해주세요"
         />
       )}
-
-      <div>
+      <div className="flex items-center gap-2  w-80">
         <input
           id="authModeCheckbox"
           type="checkbox"
@@ -72,12 +80,13 @@ export default function AuthForm({
               handleAuthMode();
             }
           }}
+          className="w-4 h-4"
           checked={isSignup}
         />
         <label htmlFor="authModeCheckbox">회원가입</label>
       </div>
 
-      <div>
+      <div className="mt-10">
         <Button>{isSignup ? '회원가입' : '로그인'}</Button>
       </div>
     </form>

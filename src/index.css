@@ -91,5 +91,5 @@ select:focus {
  */
 input[type='checkbox'] {
   /* 체크되었을 때의 강조 색상 변경 */
-  accent-color: var(--point-color); /* 빨간 계열 */
+  accent-color: var(--primary-color); /* 빨간 계열 */
 }
