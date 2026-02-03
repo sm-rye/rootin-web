@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import type { Auth } from '@/entities/auth';
 
-// mode login일 때, 닉네임 삭제하도록
 export default function useAuthForm() {
   const [authFormData, setAuthFormData] = useState<Auth>({
     email: '',
     password: '',
   });
 
+  const [error, setError] = useState({ nickname: '', email: '', password: '' });
+
   const onChangeAuthInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+    setError((prev) => ({ ...prev, [id]: '' }));
+
     setAuthFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -20,5 +23,12 @@ export default function useAuthForm() {
     });
   };
 
-  return { authFormData, onChangeAuthInput, removeNickname, setAuthFormData };
+  return {
+    authFormData,
+    onChangeAuthInput,
+    removeNickname,
+    setAuthFormData,
+    error,
+    setError,
+  };
 }

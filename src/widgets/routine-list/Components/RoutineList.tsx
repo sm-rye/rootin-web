@@ -3,7 +3,7 @@ import React from 'react';
 import type { Routine } from '@/entities/routine';
 import { useNavigate } from 'react-router-dom';
 
-import { Card } from '@/shared/Components';
+import { Card, Empty } from '@/shared/Components';
 
 export default function RoutineList({ routines }: { routines: Routine[] }) {
   const navigate = useNavigate();
@@ -11,6 +11,18 @@ export default function RoutineList({ routines }: { routines: Routine[] }) {
   const handleRoutineClick = (id: number) => {
     navigate(`${id}`);
   };
+
+  if (routines.length <= 0)
+    return (
+      <div className=" mt-20">
+        <Empty
+          title="아직 루틴이 없습니다."
+          description="성공적인 하루를 위한 첫 걸음, 지금 새로운 루틴을 만들어보세요!"
+          actionLabel="첫 루틴 만들기"
+          onAction={() => navigate('/routines/new')} // 루틴 생성 페이지로 이동 함수
+        />
+      </div>
+    );
 
   return (
     <ul className="grid grid-cols-1 h-full items-center p-5 gap-5 lg:grid-cols-2 lg:gap-x-7.5 lg:px-7.5">

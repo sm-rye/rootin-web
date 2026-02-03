@@ -5,11 +5,13 @@ import { addRoutine } from '../api';
 
 import { useCreateTasks, TaskEditor } from '@/features/task-add';
 import { Input, Button, Label, FormElement } from '@/shared/Components';
+import { authStore } from '@/entities/auth';
 
 export default function RoutineCreateForm() {
   const { routineInfo, changeRoutineInput } = useCreateRoutines();
 
   const { tasks, addTask, deleteTask, changeTaskName } = useCreateTasks();
+  const user = authStore((state) => state.user);
 
   const submitRoutine = async (e: React.FormEvent<HTMLFormElement>) => {
     // todo :  validation , api 통신
@@ -27,16 +29,19 @@ export default function RoutineCreateForm() {
       return;
     }
 
-    const routine = { tasks, ...routineInfo };
+    console.log(user);
+    const routine = { tasks, ...routineInfo, user_id: user?.user_id };
     console.log(routine);
+    // // const
 
     const res = await addRoutine(routine);
+    if (res?.status === 201) console.log('성공 ㅊㅋㅊ');
   };
 
   return (
     <form
       onSubmit={submitRoutine}
-      className="flex flex-col w-full h-full max-w-4xl mt-5"
+      className="flex flex-col h-full  mt-5  mx-auto w-full lg:w-4/6"
     >
       <div className="flex-1">
         <Input
@@ -97,7 +102,7 @@ export default function RoutineCreateForm() {
       </div>
 
       <div className="w-full flex justify-center py-8 h-20">
-        <Button type="submit" className=" w-full">
+        <Button type="submit" className="px-10">
           루틴 등록하기
         </Button>
       </div>

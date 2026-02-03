@@ -3,8 +3,6 @@ import React from 'react';
 import Label from './Label';
 import FormElement from './FormElement';
 
-import { IoIosInformationCircle } from 'react-icons/io';
-
 import InfoText from '../Text/InfoText';
 interface InputProps {
   inputId: string;
@@ -16,6 +14,7 @@ interface InputProps {
   className?: string;
   inputNextText?: string;
   readOnly?: boolean | undefined;
+  maxLength?: number | undefined;
 
   onClick?: () => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,6 +30,7 @@ export default function Input({
   inputNextText = '',
   className = '',
   readOnly = false,
+  maxLength,
 
   onChange,
   onClick,
@@ -50,6 +50,7 @@ export default function Input({
             onClick={() => onClick?.()}
             value={value}
             autoComplete="false"
+            maxLength={maxLength}
           />
           {inputNextText && <p> {inputNextText}</p>}
         </div>

@@ -4,7 +4,7 @@ import { IoMdSearch } from 'react-icons/io';
 
 import { RoutineList } from '@/widgets/routine-list';
 import { useRoutines } from '@/entities/routine';
-import { Button, Input } from '@/shared/Components';
+import { Input } from '@/shared/Components';
 
 export default function RoutinePage() {
   const { data, isError, isLoading } = useRoutines();
@@ -46,9 +46,6 @@ export default function RoutinePage() {
             <div className="text-md font-semibold p-1 text-neutral-400">
               <button>종료된 루틴</button>
             </div>
-          </div>
-          <div>
-            <Button>+ 새 루틴 추가</Button>
           </div>
         </div>
         <div>{data?.routines && <RoutineList routines={data?.routines} />}</div>
