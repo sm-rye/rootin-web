@@ -16,17 +16,19 @@ export default function useAuth() {
     onSuccess: (data) => {
       const { token, user } = data;
 
+      // 1. token 셋팅
       localStorage.setItem('token', token);
       queryClient.invalidateQueries({ queryKey: ['user'] });
 
+      //2. user 응답값 스토어 저장
       setAuth(user);
-      alert('반갑습니다!');
 
+      //3. 루틴 페이지로 라우팅
       navigate('/routines', { replace: true });
     },
+
     onError: (error) => {
       console.error('인증 실패:', error);
-      alert('로그인/회원가입 중 오류가 발생했습니다.');
     },
   });
 }

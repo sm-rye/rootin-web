@@ -49,7 +49,6 @@ export default function Input({
             onChange={(e) => onChange?.(e)}
             onClick={() => onClick?.()}
             value={value}
-            autoComplete="false"
             maxLength={maxLength}
           />
           {inputNextText && <p> {inputNextText}</p>}
