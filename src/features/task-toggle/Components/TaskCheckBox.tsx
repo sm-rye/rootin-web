@@ -79,9 +79,8 @@ export default function TaskCheckBox({
             오늘의 테스크
           </h3>
           <p className="mt-1 text-sm text-muted">
-            아래 체크가 곧{' '}
-            <span className="font-medium text-foreground">오늘 링</span>에
-            반영돼요.
+            아래 체크가 <span className="font-medium text-foreground">링</span>
+            에 반영돼요.
           </p>
 
           <div className="mt-4 divide-y divide-primary-gray gap-2">

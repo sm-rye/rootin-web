@@ -1,1 +1,2 @@
-export * from '@/entities/task/model/types';
+export * from './model/types';
+export * from './lib/validation';

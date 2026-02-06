@@ -5,7 +5,7 @@ export default function useCreateTasks() {
   const MAX_TASK = 5;
 
   const [tasks, setTasks] = useState<Task[]>([{ name: '', sort_order: 1 }]);
-  const [savedTasks, setSavedTasks] = useState(0);
+  const [emptyTasks, setEmptyTasks] = useState<Task[] | undefined>(undefined);
 
   const addTask = () => {
     if (tasks.length >= MAX_TASK) {
@@ -19,7 +19,7 @@ export default function useCreateTasks() {
   };
 
   const deleteTask = (id: number) => {
-    if (!savedTasks && tasks.length <= 1) {
+    if (tasks.length <= 1) {
       window.alert('task는 최소 하나 이상 등록되어야함');
       return;
     }
@@ -35,6 +35,9 @@ export default function useCreateTasks() {
     e: React.ChangeEvent<HTMLInputElement>,
     currTask: number,
   ) => {
+    if (emptyTasks) {
+      setEmptyTasks((prev) => prev?.filter((t) => t.sort_order !== currTask));
+    }
     setTasks((prev) =>
       prev.map((t) =>
         t.sort_order === currTask ? { ...t, name: e.target.value } : t,
@@ -42,7 +45,15 @@ export default function useCreateTasks() {
     );
   };
 
-  return { tasks, addTask, deleteTask, changeTaskName, setTasks };
+  return {
+    tasks,
+    emptyTasks,
+    addTask,
+    deleteTask,
+    changeTaskName,
+    setTasks,
+    setEmptyTasks,
+  };
 }
 
 // 해야할 것

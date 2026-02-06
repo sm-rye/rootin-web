@@ -9,9 +9,14 @@ export default function useCreateRoutines() {
     description: '',
     duration_days: DEFAULT_DURATION,
   });
+  const [errors, setErrors] = useState({
+    title: '',
+  });
 
   const changeRoutineInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
+
+    if (id === 'title') setErrors((prev) => ({ ...prev, title: '' }));
 
     setRoutineInfo((prev) => ({
       ...prev,
@@ -21,6 +26,8 @@ export default function useCreateRoutines() {
 
   return {
     routineInfo,
+    errors,
+    setErrors,
     changeRoutineInput,
   };
 }

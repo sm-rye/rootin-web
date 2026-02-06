@@ -15,6 +15,7 @@ interface InputProps {
   inputNextText?: string;
   readOnly?: boolean | undefined;
   maxLength?: number | undefined;
+  numLength?: { min: number; max: number } | undefined;
 
   onClick?: () => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,6 +32,7 @@ export default function Input({
   className = '',
   readOnly = false,
   maxLength,
+  numLength = undefined,
 
   onChange,
   onClick,
@@ -50,6 +52,8 @@ export default function Input({
             onClick={() => onClick?.()}
             value={value}
             maxLength={maxLength}
+            min={numLength?.min}
+            max={numLength?.max}
           />
           {inputNextText && <p> {inputNextText}</p>}
         </div>

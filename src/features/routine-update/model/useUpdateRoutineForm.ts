@@ -5,6 +5,9 @@ import type { Routine } from '@/entities/routine';
 export default function useUpdateRoutineForm() {
   const [routineInfo, setRoutineInfo] = useState<Routine | undefined>();
   const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({
+    title: '',
+  });
 
   const handleRoutineEditBtn = () => {
     setIsEditing((prev) => !prev);
@@ -17,8 +20,10 @@ export default function useUpdateRoutineForm() {
 
   return {
     isEditing,
-    setIsEditing,
     routineInfo,
+    errors,
+    setIsEditing,
+    setErrors,
     handleRoutineEditBtn,
     setRoutineInfo,
     handleRoutineInputChange,

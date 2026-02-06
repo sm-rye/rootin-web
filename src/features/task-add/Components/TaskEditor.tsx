@@ -10,12 +10,14 @@ interface TaskEditorProps {
     task_id: number,
   ) => void;
   deleteTask: (id: number) => void;
+  isEmpty?: undefined | Task;
 }
 
 export default function TaskEditor({
   task,
   onChangeTaskInput,
   deleteTask,
+  isEmpty,
 }: TaskEditorProps) {
   if (!task) return <></>;
 
@@ -44,7 +46,8 @@ export default function TaskEditor({
           onChange={(e) => {
             onChangeTaskInput(e, task.sort_order);
           }}
-          placeHolder={`${changeNumToKorean(task.sort_order)} 번째 실천 행동`}
+          className={`${isEmpty && 'border border-primary'} `}
+          placeHolder={`${changeNumToKorean(task.sort_order)} 번째 실천 행동${isEmpty ? '을 입력해주세요.' : ''}`}
         />
       </div>
 

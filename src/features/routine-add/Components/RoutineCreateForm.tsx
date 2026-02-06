@@ -1,41 +1,53 @@
 import React from 'react';
 
 import useCreateRoutines from '../model/useCreateRoutines';
-import { addRoutine } from '../api';
+
+import { validateRoutineTitle } from '@/entities/routine';
+import { validateTaskName } from '@/entities/task';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 import { useCreateTasks, TaskEditor } from '@/features/task-add';
 import { Input, Button, Label, FormElement } from '@/shared/Components';
 import { authStore } from '@/entities/auth';
+import useCreateRoutineMutation from '../model/useCreateRoutineMutation';
 
 export default function RoutineCreateForm() {
-  const { routineInfo, changeRoutineInput } = useCreateRoutines();
+  const { routineInfo, errors, setErrors, changeRoutineInput } =
+    useCreateRoutines();
 
-  const { tasks, addTask, deleteTask, changeTaskName } = useCreateTasks();
+  const { mutate, isError, isPending } = useCreateRoutineMutation();
+
+  const {
+    tasks,
+    emptyTasks,
+
+    setEmptyTasks,
+    addTask,
+    deleteTask,
+    changeTaskName,
+  } = useCreateTasks();
+
   const user = authStore((state) => state.user);
 
   const submitRoutine = async (e: React.FormEvent<HTMLFormElement>) => {
-    // todo :  validation , api 통신
     e.preventDefault();
 
-    if (tasks.length < 1) {
-      window.alert('하나 이상의 task를 등록해주세요');
-      return;
-    }
+    // 1. 루틴 유효성 검사 실행
+    const validatedTitle = validateRoutineTitle(routineInfo.title);
+    setErrors({ title: validatedTitle });
 
-    const emptyTasks = tasks.filter((t) => t.name.trim() === '');
+    // 2. 테스크 유효성 검사 실행
+    const emptyTasks = validateTaskName(tasks);
+    if (emptyTasks) setEmptyTasks(emptyTasks);
 
-    if (emptyTasks.length > 0) {
-      window.alert('작성되지 않은 task를 확인해주세요');
-      return;
-    }
+    // 3. 유효성 검사의 실패했을 경우 함수에서 벗어난다.
+    if (validatedTitle || emptyTasks) return;
 
-    console.log(user);
+    // 4. 루틴 등록 폼데이터 가공
     const routine = { tasks, ...routineInfo, user_id: user?.user_id };
-    console.log(routine);
-    // // const
 
-    const res = await addRoutine(routine);
-    if (res?.status === 201) console.log('성공 ㅊㅋㅊ');
+    // 5. 루틴 등록 함수 실행
+    mutate(routine);
   };
 
   return (
@@ -46,6 +58,7 @@ export default function RoutineCreateForm() {
       <div className="flex-1">
         <Input
           inputId="title"
+          helperText={errors.title}
           value={routineInfo.title}
           inputName={'이름'}
           onChange={changeRoutineInput}
@@ -70,6 +83,7 @@ export default function RoutineCreateForm() {
           placeHolder={'루틴에 대한 설명이나 목표를 적어보세요.'}
           className="w-38"
           helperText="1~100일 사이의 숫자를 입력해주세요."
+          numLength={{ min: 1, max: 100 }}
         />
 
         <FormElement hasMargin>
@@ -95,6 +109,9 @@ export default function RoutineCreateForm() {
                   task={t}
                   onChangeTaskInput={changeTaskName}
                   deleteTask={deleteTask}
+                  isEmpty={emptyTasks?.find(
+                    (emptyTask) => emptyTask.sort_order === t.sort_order,
+                  )}
                 />
               ))}
           </>
@@ -104,6 +121,7 @@ export default function RoutineCreateForm() {
       <div className="w-full flex justify-center py-8 h-20">
         <Button type="submit" className="px-10">
           루틴 등록하기
+          {isPending && <AiOutlineLoading3Quarters className="animate-spin" />}
         </Button>
       </div>
     </form>

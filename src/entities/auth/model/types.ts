@@ -7,7 +7,7 @@ export interface Auth {
 export type AuthMode = 'login' | 'signup';
 
 export type User = {
-  id: number;
+  user_id: number;
 } & Auth;
 
 export interface AuthResponse {

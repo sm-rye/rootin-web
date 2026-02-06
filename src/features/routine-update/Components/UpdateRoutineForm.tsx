@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import type { Routine } from '@/entities/routine';
+import { validateRoutineTitle, type Routine } from '@/entities/routine';
 import { DeleteRoutineBtn } from '@/features/routine-delete';
 import {
   Button,
@@ -14,18 +14,26 @@ import {
   useUpdateRoutineForm,
 } from '@/features/routine-update';
 import { TaskCreateBtn, TaskEditor, useCreateTasks } from '@/features/task-add';
-import { useNavigate } from 'react-router-dom';
 
 export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
-  const navigate = useNavigate();
-  const { routineInfo, setRoutineInfo, handleRoutineInputChange } =
-    useUpdateRoutineForm();
+  const {
+    routineInfo,
+    errors,
+    setErrors,
+    setRoutineInfo,
+    handleRoutineInputChange,
+  } = useUpdateRoutineForm();
   const { tasks, changeTaskName, setTasks, deleteTask, addTask } =
     useCreateTasks();
   const { mutate, isSuccess, isPending } = useUpdateRoutine();
 
   const handleUpdateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // 1.루틴 타이틀 유효성 검사
+    const validatedTitle = validateRoutineTitle(routineInfo?.title);
+    setErrors({ title: validatedTitle });
+    if (validatedTitle) return;
 
     if (routine.id && routineInfo && routineInfo.id) {
       mutate({
@@ -63,6 +71,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
           inputName="이름"
           value={routineInfo?.title}
           onChange={handleRoutineInputChange}
+          helperText={errors.title}
         />
         <Input
           inputId="description"
@@ -80,6 +89,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
           placeHolder={'루틴에 대한 설명이나 목표를 적어보세요.'}
           className="w-38"
           helperText="1~100일 사이의 숫자를 입력해주세요."
+          numLength={{ min: 1, max: 100 }}
         />
         <FormElement hasMargin>
           <>

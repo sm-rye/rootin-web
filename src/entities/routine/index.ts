@@ -3,6 +3,7 @@ import useRoutineDetail from './model/useRoutineDetail';
 
 export * from './model/types';
 export * from './model/store';
+export * from './lib/validation';
 export * from './api';
 
 export { useRoutines, useRoutineDetail };
