@@ -4,7 +4,6 @@ export interface RoutineInfo {
   title: string;
   description?: string;
   duration_days?: number;
-
   start_date?: Date;
   daily_status?: DailyStatus[];
 }
@@ -23,6 +22,8 @@ export interface DailyStatus {
 export type Routine = {
   id: number;
   tasks?: Task[];
+  completion_rate?: number;
+  end_date?: Date;
 } & RoutineInfo;
 
 export type NewRoutine = {

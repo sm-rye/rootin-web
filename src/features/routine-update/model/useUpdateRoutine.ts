@@ -12,8 +12,8 @@ export default function useUpdateRoutine() {
       alert('업데이트 되었읍니다');
     },
     onError: (error) => {
-      console.error('삭제 실패:', error);
-      alert('삭제 중 오류가 발생했습니다.');
+      console.error('업데이트 실패:', error);
+      alert('업데이트 중 오류가 발생했습니다.');
     },
   });
 }
