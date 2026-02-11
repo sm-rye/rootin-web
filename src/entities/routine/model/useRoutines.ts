@@ -1,11 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 import { getAllRoutines } from '@/entities/routine';
 
-export default function useRoutines() {
+export default function useRoutines(
+  page: number = 1,
+  limit: number = 6,
+  filter: 'active' | 'completed' = 'active',
+) {
   return useQuery({
-    queryKey: ['routines'],
-    queryFn: getAllRoutines,
-    staleTime: 1000 * 60 * 5, // 5분간 캐시 유지
+    queryKey: ['routines', page, limit, filter],
+    queryFn: () => getAllRoutines(page, limit, filter),
+    staleTime: 1000 * 60 * 5,
+    placeholderData: keepPreviousData,
   });
 }

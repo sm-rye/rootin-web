@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 import type { Routine } from '@/entities/routine';
@@ -16,6 +16,13 @@ export default function RoutineList({
   filter = 'active',
 }: RoutineListProps) {
   const navigate = useNavigate();
+  const [animated, setAnimated] = useState(false);
+
+  useEffect(() => {
+    // Web API (Window 객체) - 브라우저가 다음 화면을 그리기 직전에 콜백을 실행해 줌
+    const timer = requestAnimationFrame(() => setAnimated(true));
+    return () => cancelAnimationFrame(timer);
+  }, []);
 
   const handleRoutineClick = (id: number) => {
     navigate(`${id}`);
@@ -42,34 +49,66 @@ export default function RoutineList({
   }
 
   return (
-    <ul className="grid grid-cols-1 h-full items-center p-5 gap-5 lg:grid-cols-2 lg:gap-x-7.5 lg:px-7.5">
-      {routines.map((routine: Routine) => {
+    <ul className="grid grid-cols-1 items-start content-start p-5 gap-5 lg:grid-cols-2 lg:gap-x-7.5 lg:px-7.5  lg:py-1">
+      {routines.map((routine: Routine, index: number) => {
         const rate = routine.completion_rate ?? 0;
         return (
           <li
             key={routine.id}
             onClick={() => handleRoutineClick(routine.id)}
-            className="h-34 cursor-pointer lg:h-44"
+            className="h-36 cursor-pointer lg:h-40 animate-[cardIn_0.4s_ease-out_both]"
+            style={{ animationDelay: `${index * 80}ms` }}
           >
-            <Card>
-              <div className="flex flex-col w-full h-full p-3">
-                <h6 className="text-lg font-semibold">{routine.title}</h6>
-                {routine?.start_date && (
-                  <p className="text-gray-400 text-sm">
-                    시작일 :{' '}
-                    {dayjs(routine?.start_date).format('YYYY-MM-DD')}
-                  </p>
-                )}
+            <Card className="hover:shadow-md hover:-translate-y-0.5 transition">
+              <div className="flex flex-col w-full h-full p-3.5">
+                <div className="flex items-start justify-between">
+                  <h6 className="text-lg font-semibold leading-snug">
+                    {routine.title}
+                  </h6>
+                  {routine.end_date &&
+                    !dayjs().isAfter(dayjs(routine.end_date)) && (
+                      <span className="text-xs font-semibold text-primary bg-red-50 px-2 py-1 rounded-full shrink-0 ml-2">
+                        D-
+                        {dayjs(routine.end_date).diff(dayjs(), 'day')}
+                      </span>
+                    )}
+                </div>
 
-                <div className="flex-1 flex h-full flex-col justify-center">
-                  <div className="bg-red-50 w-full h-10 rounded-xl overflow-hidden relative">
-                    <div
-                      className="bg-primary h-10 shadow"
-                      style={{ width: `${rate}%` }}
-                    />
-                    <div className="text-white absolute z-10 top-3 left-3 text-xs">
-                      달성률 : {rate}%
-                    </div>
+                <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-400">
+                  {routine.start_date && (
+                    <span>
+                      {dayjs(routine.start_date).format('MM.DD')}
+                      {' ~ '}
+                      {routine.end_date
+                        ? dayjs(routine.end_date).format('MM.DD')
+                        : '진행 중'}
+                    </span>
+                  )}
+                  {routine.tasks && routine.tasks.length > 0 && (
+                    <>
+                      <span className="text-gray-300">·</span>
+                      <span>{routine.tasks.length}개 태스크</span>
+                    </>
+                  )}
+                  {routine.duration_days && (
+                    <>
+                      <span className="text-gray-300">·</span>
+                      <span>{routine.duration_days}일 목표</span>
+                    </>
+                  )}
+                </div>
+
+                <div className="mt-6 bg-red-50/60 w-full h-10 rounded-xl overflow-hidden relative">
+                  <div
+                    className="h-10 rounded-xl shadow-md transition-all duration-700 ease-out"
+                    style={{
+                      width: animated ? `${rate}%` : '0%',
+                      background:
+                        'linear-gradient(135deg, #ea4c89 0%, #f78fb3 50%, #ff6b81 100%)',
+                    }}
+                  />
+                  <div className="absolute z-10 top-1/2 -translate-y-1/2 left-3 text-xs font-medium text-white drop-shadow-sm">
+                    달성률 : {rate}%
                   </div>
                 </div>
               </div>

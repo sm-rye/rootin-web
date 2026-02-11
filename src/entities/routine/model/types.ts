@@ -30,6 +30,20 @@ export type NewRoutine = {
   tasks: Task[];
 } & RoutineInfo;
 
+export interface Pagination {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface RoutineCounts {
+  active: number;
+  completed: number;
+}
+
 export interface AllRoutineResponse {
   routines: Routine[];
+  pagination: Pagination;
+  counts: RoutineCounts;
 }

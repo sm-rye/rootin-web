@@ -4,66 +4,60 @@ import { useNavigate } from 'react-router-dom';
 import { IoMdSearch } from 'react-icons/io';
 
 import { RoutineList } from '@/widgets/routine-list';
-import { useRoutines, type Routine } from '@/entities/routine';
+import { useRoutines } from '@/entities/routine';
 import { Button, Input } from '@/shared/Components';
 
 type SortOption = 'newest' | 'oldest' | 'name';
 type FilterOption = 'active' | 'completed';
 
-function isRoutineCompleted(routine: Routine): boolean {
-  if (routine.completion_rate === 100) return true;
-  if (!routine.end_date) return false;
-  return dayjs().isAfter(dayjs(routine.end_date));
-}
+const PAGE_SIZE = 6;
 
 export default function RoutinePage() {
   const navigate = useNavigate();
-  const { data, isError, isLoading } = useRoutines();
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortOption>('newest');
   const [filter, setFilter] = useState<FilterOption>('active');
 
-  const filteredRoutines = useMemo(() => {
+  const { data, isError, isLoading } = useRoutines(page, PAGE_SIZE, filter);
+
+  const totalPages = data?.pagination?.totalPages ?? 1;
+  const activeCount = data?.counts?.active ?? 0;
+  const completedCount = data?.counts?.completed ?? 0;
+
+  const handleFilterChange = (newFilter: FilterOption) => {
+    setFilter(newFilter);
+    setPage(1);
+  };
+
+  const displayedRoutines = useMemo(() => {
     if (!data?.routines) return [];
 
     let result = data.routines;
 
-    // Filter by search
     if (search.trim()) {
       const keyword = search.trim().toLowerCase();
-      result = result.filter((r) =>
-        r.title.toLowerCase().includes(keyword),
-      );
+      result = result.filter((r) => r.title.toLowerCase().includes(keyword));
     }
 
-    // Filter by active/completed
-    result = result.filter((r) =>
-      filter === 'completed' ? isRoutineCompleted(r) : !isRoutineCompleted(r),
-    );
-
-    // Sort
     result = [...result].sort((a, b) => {
       if (sort === 'newest') {
-        return (
-          dayjs(b.start_date).valueOf() - dayjs(a.start_date).valueOf()
-        );
+        return dayjs(b.start_date).valueOf() - dayjs(a.start_date).valueOf();
       }
       if (sort === 'oldest') {
-        return (
-          dayjs(a.start_date).valueOf() - dayjs(b.start_date).valueOf()
-        );
+        return dayjs(a.start_date).valueOf() - dayjs(b.start_date).valueOf();
       }
       return a.title.localeCompare(b.title);
     });
 
     return result;
-  }, [data?.routines, search, sort, filter]);
+  }, [data?.routines, search, sort]);
 
   if (isError) return <div>error</div>;
   if (isLoading) return <div> loading</div>;
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col overflow-hidden">
       <header className="flex flex-col gap-y-2 p-2.5 h-24 justify-center">
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -91,23 +85,47 @@ export default function RoutinePage() {
       </header>
       <hr className="border-b border-gray-200 my-3 mt-1.5" />
 
-      <section className="w-full h-full bg-secondary-white flex-1">
-        <div className="flex justify-between items-center p-3">
-          <div className="flex gap-x-5">
-            <div
-              className={`text-md font-semibold p-1 ${filter === 'active' ? 'border-b-2 border-primary' : 'text-neutral-400'}`}
+      <section className="w-full bg-secondary-white flex-1 flex flex-col min-h-0">
+        <div className="flex justify-between items-center px-4 py-3">
+          <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
+            <button
+              onClick={() => handleFilterChange('active')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all ${
+                filter === 'active'
+                  ? 'bg-white text-primary shadow-sm'
+                  : 'text-neutral-400 hover:text-neutral-500'
+              }`}
             >
-              <button onClick={() => setFilter('active')}>
-                진행 중인 루틴
-              </button>
-            </div>
-            <div
-              className={`text-md font-semibold p-1 ${filter === 'completed' ? 'border-b-2 border-primary' : 'text-neutral-400'}`}
+              진행 중
+              <span
+                className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${
+                  filter === 'active'
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-gray-200 text-neutral-400'
+                }`}
+              >
+                {activeCount}
+              </span>
+            </button>
+            <button
+              onClick={() => handleFilterChange('completed')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all ${
+                filter === 'completed'
+                  ? 'bg-white text-primary shadow-sm'
+                  : 'text-neutral-400 hover:text-neutral-500'
+              }`}
             >
-              <button onClick={() => setFilter('completed')}>
-                종료된 루틴
-              </button>
-            </div>
+              종료
+              <span
+                className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${
+                  filter === 'completed'
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-gray-200 text-neutral-400'
+                }`}
+              >
+                {completedCount}
+              </span>
+            </button>
           </div>
           {filter === 'active' && (
             <Button
@@ -119,8 +137,38 @@ export default function RoutinePage() {
             </Button>
           )}
         </div>
-        <div>
-          <RoutineList routines={filteredRoutines} filter={filter} />
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <RoutineList routines={displayedRoutines} filter={filter} />
+        </div>
+
+        <div className="flex justify-center items-center gap-2 py-4 shrink-0 border-t border-gray-100">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:text-gray-300 disabled:cursor-not-allowed text-gray-500 hover:bg-gray-100"
+          >
+            이전
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+            <button
+              key={num}
+              onClick={() => setPage(num)}
+              className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                num === page
+                  ? 'bg-primary text-white'
+                  : 'text-gray-500 hover:bg-gray-100'
+              }`}
+            >
+              {num}
+            </button>
+          ))}
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:text-gray-300 disabled:cursor-not-allowed text-gray-500 hover:bg-gray-100"
+          >
+            다음
+          </button>
         </div>
       </section>
     </div>

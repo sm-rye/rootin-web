@@ -39,13 +39,13 @@ export default function BaseLayout() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen ">
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header />
-      <div className="flex-1 flex">
+      <div className="flex-1 flex min-h-0">
         <aside className="hidden md:block w-64 border-r border-gray-200">
           <Sidebar />
         </aside>
-        <main className="flex-1">
+        <main className="flex-1 min-h-0">
           <Outlet />
         </main>
       </div>
