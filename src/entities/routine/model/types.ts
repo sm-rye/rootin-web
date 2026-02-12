@@ -25,6 +25,8 @@ export type Routine = {
   completion_rate?: number;
   end_date?: Date;
   isCompleted?: boolean;
+  todayTotal?: number;
+  todayCompleted?: number;
 } & RoutineInfo;
 
 export type NewRoutine = {

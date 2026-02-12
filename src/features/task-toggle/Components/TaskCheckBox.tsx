@@ -28,10 +28,10 @@ export default function TaskCheckBox({
 
   return (
     <section className="px-4 pb-24">
-      <h2 className="text-base font-bold text-foreground">
+      <h2 className="text-xl font-bold text-foreground">
         {isCompleted ? '최종 결과' : '오늘의 체크리스트'}
       </h2>
-      <p className="mt-0.5 text-xs text-gray-400">
+      <p className="mt-0.5 text-sm  text-gray-400">
         {isCompleted
           ? '이 루틴은 종료되었습니다'
           : '태스크를 완료하면 링에 반영돼요'}

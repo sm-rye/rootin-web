@@ -12,6 +12,7 @@ export default function useToggleTask() {
     mutationFn: ({ id, date }: { id: number; date: string }) =>
       toggleTask({ id, date }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['today-summary'] });
       if (routineId) {
         queryClient.invalidateQueries({ queryKey: ['routines', routineId] });
       } else {

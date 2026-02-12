@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Header } from '@/widgets/layout-header';
 import { FooterNav } from '@/widgets/layout-footer';
@@ -7,6 +7,9 @@ import { Sidebar } from '@/widgets/layout-sidebar';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { authStore, useGetMe } from '@/entities/auth';
+import { initTheme } from '@/shared/lib/theme';
+
+initTheme();
 
 export default function BaseLayout() {
   const navigate = useNavigate();
@@ -49,7 +52,7 @@ export default function BaseLayout() {
           <Outlet />
         </main>
       </div>
-      <footer className="block lg:hidden sticky bottom-0 z-50">
+      <footer className="block md:hidden sticky bottom-0 z-50">
         <FooterNav />
       </footer>
     </div>
