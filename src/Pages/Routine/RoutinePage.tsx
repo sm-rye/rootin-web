@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { IoMdSearch } from 'react-icons/io';
 
@@ -19,7 +18,7 @@ export default function RoutinePage() {
   const [sort, setSort] = useState<SortOption>('newest');
   const [filter, setFilter] = useState<FilterOption>('active');
 
-  const { data, isError, isLoading } = useRoutines(page, PAGE_SIZE, filter);
+  const { data, isError, isLoading } = useRoutines(page, PAGE_SIZE, filter, sort);
 
   const totalPages = data?.pagination?.totalPages ?? 1;
   const activeCount = data?.counts?.active ?? 0;
@@ -33,25 +32,13 @@ export default function RoutinePage() {
   const displayedRoutines = useMemo(() => {
     if (!data?.routines) return [];
 
-    let result = data.routines;
+    if (!search.trim()) return data.routines;
 
-    if (search.trim()) {
-      const keyword = search.trim().toLowerCase();
-      result = result.filter((r) => r.title.toLowerCase().includes(keyword));
-    }
-
-    result = [...result].sort((a, b) => {
-      if (sort === 'newest') {
-        return dayjs(b.start_date).valueOf() - dayjs(a.start_date).valueOf();
-      }
-      if (sort === 'oldest') {
-        return dayjs(a.start_date).valueOf() - dayjs(b.start_date).valueOf();
-      }
-      return a.title.localeCompare(b.title);
-    });
-
-    return result;
-  }, [data?.routines, search, sort]);
+    const keyword = search.trim().toLowerCase();
+    return data.routines.filter((r) =>
+      r.title.toLowerCase().includes(keyword),
+    );
+  }, [data?.routines, search]);
 
   if (isError) return <div>error</div>;
   if (isLoading) return <div> loading</div>;
@@ -75,7 +62,10 @@ export default function RoutinePage() {
           <select
             className="w-34 px-2 border border-gray-300 rounded-sm bg-white focus:border-gray-400"
             value={sort}
-            onChange={(e) => setSort(e.target.value as SortOption)}
+            onChange={(e) => {
+              setSort(e.target.value as SortOption);
+              setPage(1);
+            }}
           >
             <option value="newest">정렬 : 최신순</option>
             <option value="oldest">정렬 : 오래된순</option>
