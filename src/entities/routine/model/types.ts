@@ -24,6 +24,7 @@ export type Routine = {
   tasks?: Task[];
   completion_rate?: number;
   end_date?: Date;
+  isCompleted?: boolean;
 } & RoutineInfo;
 
 export type NewRoutine = {

@@ -18,7 +18,10 @@ export default function useDailyToggleTask(
       // 사유는 daily_status가 변경될 때마다 today로 리셋되지 않나..?
 
       const matchData = selectedDayTaskStaus?.date || today;
-      setSelectedDayTaskStaus(daily_status.find((d) => d.date === matchData));
+      const found = daily_status.find((d) => d.date === matchData);
+      setSelectedDayTaskStaus(
+        found ?? daily_status[daily_status.length - 1],
+      );
     }
   }, [daily_status]);
 

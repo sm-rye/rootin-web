@@ -7,11 +7,13 @@ import type { DailyStatus } from '@/entities/routine';
 interface TaskCheckBoxProps {
   selectedDayTaskStaus: DailyStatus | undefined;
   tasks: Task[] | undefined;
+  isCompleted?: boolean;
 }
 
 export default function TaskCheckBox({
   selectedDayTaskStaus,
   tasks,
+  isCompleted = false,
 }: TaskCheckBoxProps) {
   if (!selectedDayTaskStaus) return <div>종료된 루틴입니다</div>;
   if (!tasks) return <Empty />;
@@ -26,14 +28,21 @@ export default function TaskCheckBox({
 
   return (
     <section className="px-4 pb-24">
-      <h2 className="text-sm font-semibold text-foreground">목표 달성 링</h2>
+      <h2 className="text-base font-bold text-foreground">
+        {isCompleted ? '최종 결과' : '오늘의 체크리스트'}
+      </h2>
+      <p className="mt-0.5 text-xs text-gray-400">
+        {isCompleted
+          ? '이 루틴은 종료되었습니다'
+          : '태스크를 완료하면 링에 반영돼요'}
+      </p>
       {/* Card */}
       <article
         className={[
           'overflow-hidden rounded-2xl border bg-white',
-          'border-muted',
+          allDone ? 'border-primary/30' : 'border-muted',
           'shadow-[0_8px_24px_rgba(17,24,39,0.08)]',
-          'mt-3',
+          'mt-3 transition-all duration-300',
         ].join(' ')}
       >
         {/* Header */}
@@ -41,7 +50,8 @@ export default function TaskCheckBox({
           className={[
             'flex items-start justify-between gap-3 border-b px-4 py-3',
             'border-muted',
-            'bg-background',
+            allDone ? 'bg-primary/5' : 'bg-background',
+            'transition-all duration-300',
           ].join(' ')}
         >
           <div>
@@ -95,6 +105,7 @@ export default function TaskCheckBox({
                   isCompleted={t.isCompleted}
                   date={selectedDayTaskStaus.date}
                   name={currTask.name}
+                  disabled={isCompleted}
                 />
               );
             })}
@@ -110,7 +121,7 @@ export default function TaskCheckBox({
         >
           <div className="text-sm text-muted">
             {allDone ? (
-              <span className="font-medium text-primary">
+              <span className="font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
                 모든 테스크 완료!
               </span>
             ) : (
