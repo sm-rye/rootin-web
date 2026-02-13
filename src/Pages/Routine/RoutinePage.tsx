@@ -18,7 +18,12 @@ export default function RoutinePage() {
   const [sort, setSort] = useState<SortOption>('newest');
   const [filter, setFilter] = useState<FilterOption>('active');
 
-  const { data, isError, isLoading } = useRoutines(page, PAGE_SIZE, filter, sort);
+  const { data, isError, isLoading } = useRoutines(
+    page,
+    PAGE_SIZE,
+    filter,
+    sort,
+  );
 
   const totalPages = data?.pagination?.totalPages ?? 1;
   const activeCount = data?.counts?.active ?? 0;
@@ -35,9 +40,7 @@ export default function RoutinePage() {
     if (!search.trim()) return data.routines;
 
     const keyword = search.trim().toLowerCase();
-    return data.routines.filter((r) =>
-      r.title.toLowerCase().includes(keyword),
-    );
+    return data.routines.filter((r) => r.title.toLowerCase().includes(keyword));
   }, [data?.routines, search]);
 
   if (isError) return <div>error</div>;
@@ -45,7 +48,7 @@ export default function RoutinePage() {
 
   return (
     <div className="w-full h-full flex flex-col overflow-hidden">
-      <header className="flex flex-col gap-y-2 p-2.5 h-24 justify-center">
+      <header className="flex flex-col gap-y-2 p-2.5 lg:px-8 h-24 justify-center">
         <div className="flex gap-2">
           <div className="relative flex-1">
             <span className="absolute left-1.5 text-2xl h-full flex items-center justify-center">

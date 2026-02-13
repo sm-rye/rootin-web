@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 
 import { validateRoutineTitle, type Routine } from '@/entities/routine';
+import { validateTaskName } from '@/entities/task';
+
 import { DeleteRoutineBtn } from '@/features/routine-delete';
 import {
   Button,
@@ -23,8 +25,16 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
     setRoutineInfo,
     handleRoutineInputChange,
   } = useUpdateRoutineForm();
-  const { tasks, changeTaskName, setTasks, deleteTask, addTask } =
-    useCreateTasks();
+  const {
+    tasks,
+    emptyTasks,
+
+    setEmptyTasks,
+    changeTaskName,
+    setTasks,
+    deleteTask,
+    addTask,
+  } = useCreateTasks();
   const { mutate, isSuccess, isPending } = useUpdateRoutine();
 
   const handleUpdateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,15 +43,29 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
     // 1.루틴 타이틀 유효성 검사
     const validatedTitle = validateRoutineTitle(routineInfo?.title);
     setErrors({ title: validatedTitle });
-    if (validatedTitle) return;
 
+    // 2. 테스크 유효성 검사 실행
+    const emptyTasks = validateTaskName(tasks);
+    if (emptyTasks) setEmptyTasks(emptyTasks);
+
+    // 3. 유효성 검사의 실패했을 경우 함수에서 벗어난다.
+    if (validatedTitle || emptyTasks) return;
+
+    // 4. 루틴 수정 폼데이터 가공
+    const formData = {
+      tasks,
+      title: routineInfo?.title,
+      description: routineInfo?.description,
+      duration_days: routineInfo?.duration_days,
+    };
+
+    console.log(formData);
+
+    // 5. 루틴 등록 함수 실행
     if (routine.id && routineInfo && routineInfo.id) {
       mutate({
         id: routine.id,
-        routine: {
-          ...routineInfo,
-          tasks,
-        },
+        routine: { ...formData },
       });
     }
     if (isSuccess) {
@@ -86,7 +110,6 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
           inputName={'기간'}
           inputNextText={'일 동안 반복'}
           onChange={handleRoutineInputChange}
-          placeHolder={'루틴에 대한 설명이나 목표를 적어보세요.'}
           className="w-38"
           helperText="1~100일 사이의 숫자를 입력해주세요."
           numLength={{ min: 1, max: 100 }}
@@ -99,9 +122,13 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
 
             {tasks.map((t) => (
               <TaskEditor
+                key={t.sort_order}
                 task={t}
                 onChangeTaskInput={changeTaskName}
                 deleteTask={deleteTask}
+                isEmpty={emptyTasks?.find(
+                  (emptyTask) => emptyTask.sort_order === t.sort_order,
+                )}
               />
             ))}
           </>

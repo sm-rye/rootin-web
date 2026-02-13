@@ -27,7 +27,7 @@ export default function TaskCheckBox({
   const allDone = totalCount > 0 && completedCount === totalCount;
 
   return (
-    <section className="px-4 pb-24">
+    <section className="px-4 pb-5">
       <h2 className="text-xl font-bold text-foreground">
         {isCompleted ? '최종 결과' : '오늘의 체크리스트'}
       </h2>

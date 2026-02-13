@@ -60,7 +60,7 @@ export default function Sidebar() {
             <p className="text-xs text-gray-500">{user.email}</p>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <button
             onClick={handleToggleTheme}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"

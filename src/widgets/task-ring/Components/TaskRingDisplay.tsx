@@ -1,9 +1,13 @@
 import type { DailyStatus } from '@/entities/routine';
+import type { Task } from '@/entities/task';
 import { Empty } from '@/shared/Components';
 import React from 'react';
 
+const completedColors = ['#EA4C89', '#00B6E3', '#8ABA56', '#FF8833'];
+
 interface TaskRingDisplayProps {
   taskDailyStatus: DailyStatus[] | undefined;
+  tasks: Task[] | undefined;
   selectedDayTaskStaus: DailyStatus | undefined;
   setSelectedDayTaskStaus: React.Dispatch<
     React.SetStateAction<DailyStatus | undefined>
@@ -12,6 +16,7 @@ interface TaskRingDisplayProps {
 
 export default function TaskRingDisplay({
   taskDailyStatus,
+  tasks,
   selectedDayTaskStaus,
   setSelectedDayTaskStaus,
 }: TaskRingDisplayProps) {
@@ -20,15 +25,22 @@ export default function TaskRingDisplay({
   const handleDayBoxClick = (dayStatus: DailyStatus) =>
     setSelectedDayTaskStaus(dayStatus);
 
-  // 링 스타일: task idx 별로 바깥→안쪽 링
-  // idx 0: outer, idx 1: middle, idx 2: inner ...
-  const getRingStyle = (idx: number, isCompleted: boolean) => {
-    // size는 px 단위로 확실히 고정 (Tailwind 동적 클래스 회피)
-    const size = 38 - idx * 9; // 38, 29, 20 ... (task 4개면 마지막은 더 작아짐)
-    const border = 4; // 링 두께
+  // 전체 달성률 계산
+  const totalSlots = taskDailyStatus.reduce(
+    (acc, d) => acc + d.status.length,
+    0,
+  );
+  const completedSlots = taskDailyStatus.reduce(
+    (acc, d) => acc + d.status.filter((s) => s.isCompleted).length,
+    0,
+  );
+  const overallRate = totalSlots > 0 ? (completedSlots / totalSlots) * 100 : 0;
 
-    // Dribbble Pink 기반. 완료/미완료 대비를 명확히.
-    const completedColors = ['#EA4C89', '#00B6E3', '#8ABA56', '#FF8833']; // 핑크/블루/그린/오렌지
+  // 링 스타일: task idx 별로 바깥→안쪽 링
+  const getRingStyle = (idx: number, isCompleted: boolean) => {
+    const size = 38 - idx * 9;
+    const border = 4;
+
     const ringColor = isCompleted
       ? completedColors[idx % completedColors.length]
       : '#E5E7EB';
@@ -38,9 +50,7 @@ export default function TaskRingDisplay({
       height: `${size}px`,
       borderWidth: `${border}px`,
       borderColor: ringColor,
-      // 도넛 링 느낌
       backgroundColor: 'transparent',
-      // 쌓이는 순서: 바깥 링이 아래, 안쪽 링이 위로
       zIndex: 10 + idx,
     } as React.CSSProperties;
   };
@@ -49,16 +59,61 @@ export default function TaskRingDisplay({
 
   return (
     <section className="px-4">
-      <h2 className="text-sm font-semibold text-foreground">목표 달성 링</h2>
+      <h2 className="text-xl font-bold text-foreground">달성 현황</h2>
+      <p className="mt-0.5 text-sm text-gray-400">
+        일별 태스크 완료 상태를 링으로 확인하세요
+      </p>
+
+      {/* 전체 달성률 프로그레스 바 */}
+      <div className="mt-3">
+        <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+          <span>전체 달성률</span>
+          <span className="font-semibold text-foreground">
+            {Math.round(overallRate)}%
+          </span>
+        </div>
+        <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500 ease-out"
+            style={{
+              width: `${overallRate}%`,
+              background: 'linear-gradient(90deg, #EA4C89 0%, #FF8833 100%)',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* 색상 범례 */}
+      {tasks && tasks.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+          {tasks.map((task, idx) => (
+            <div key={task.id} className="flex items-center gap-1.5">
+              <span
+                className="inline-block w-2.5 h-2.5 rounded-full"
+                style={{
+                  backgroundColor:
+                    completedColors[idx % completedColors.length],
+                }}
+              />
+              <span className="text-xs text-gray-500">{task.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* 100일 대응: 스크롤 영역 (그리드 유지) */}
       <div
         className="
           mt-3 max-h-80 overflow-auto rounded-2xl
-          border border-[#E5E7EB] bg-white p-3
+          border border-[#E5E7EB] bg-white px-3 py-8
         "
       >
-        <div className="grid grid-cols-7 gap-2 sm:grid-cols-8">
+        <div
+          className="grid gap-2"
+          style={{
+            gridTemplateColumns: 'repeat(auto-fill, minmax(72px, 1fr))',
+          }}
+        >
           {taskDailyStatus.map((d) => {
             const selected = isSelected(d);
 
@@ -68,7 +123,7 @@ export default function TaskRingDisplay({
                 type="button"
                 onClick={() => handleDayBoxClick(d)}
                 className={[
-                  'group relative rounded-xl p-2 text-left transition',
+                  'group relative rounded-xl p-2 text-left transition-all duration-200',
                   'bg-background hover:bg-white',
                   'border',
                   selected
@@ -78,6 +133,20 @@ export default function TaskRingDisplay({
                 ].join(' ')}
                 aria-pressed={selected}
               >
+                {/* 호버 날짜 툴팁 */}
+                <span
+                  className="
+                    pointer-events-none absolute left-1/2 -translate-x-1/2 -top-8
+                    rounded-md bg-gray-800 px-2 py-1
+                    text-[10px] font-medium text-white whitespace-nowrap
+                    opacity-0 scale-95 transition-all duration-150
+                    group-hover:opacity-100 group-hover:scale-100
+                    z-200
+                  "
+                >
+                  {d.date}
+                </span>
+
                 {/* day number */}
                 <div className="flex items-center justify-between">
                   <span
@@ -88,21 +157,15 @@ export default function TaskRingDisplay({
                   >
                     {d.day}
                   </span>
-
-                  {/* 선택 뱃지(선택된 날짜임을 명확히) */}
-                  {/* {selected && (
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary" />
-                  )} */}
                 </div>
 
                 {/* rings */}
                 <div className="mt-2 flex h-12 items-center justify-center">
                   <div className="relative h-12 w-12">
-                    {/* 바깥 → 안쪽 링 순서로 렌더 (idx 작을수록 바깥) */}
                     {d.status.map((t, idx) => (
                       <span
                         key={`${d.date}-${t.task_id}-${idx}`}
-                        className="absolute left-1/2 top-1/2 rounded-full"
+                        className="absolute left-1/2 top-1/2 rounded-full transition-all duration-200"
                         style={{
                           ...getRingStyle(idx, t.isCompleted),
                           transform: 'translate(-50%, -50%)',

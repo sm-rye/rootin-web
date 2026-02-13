@@ -49,7 +49,9 @@ export default function RoutineList({
   }
 
   return (
-    <ul className="grid grid-cols-1 items-start content-start p-5 gap-5 lg:grid-cols-2 lg:gap-x-7.5 lg:px-7.5  lg:py-1">
+    <ul
+      className={`grid grid-cols-1 items-start content-start p-5 gap-5 lg:grid-cols-2 lg:gap-x-7.5 lg:px-7.5  lg:py-1 `}
+    >
       {routines.map((routine: Routine, index: number) => {
         const rate = routine.completion_rate ?? 0;
         return (
@@ -59,42 +61,55 @@ export default function RoutineList({
             className="h-36 cursor-pointer lg:h-40 animate-[cardIn_0.4s_ease-out_both]"
             style={{ animationDelay: `${index * 80}ms` }}
           >
-            <Card className="hover:shadow-md hover:-translate-y-0.5 transition">
+            <Card
+              className={`hover:shadow-md hover:-translate-y-0.5 transition ${
+                filter === 'completed' ? 'grayscale-[20%]' : ''
+              }`}
+            >
               <div className="flex flex-col w-full h-full p-3.5">
                 <div className="flex items-start justify-between">
-                  <h6 className="text-lg font-semibold leading-snug">
+                  <h6
+                    className={`text-lg font-semibold leading-snug ${filter === 'completed' ? 'text-gray-400' : ''}`}
+                  >
                     {routine.title}
                   </h6>
-                  {routine.end_date &&
-                    !dayjs().isAfter(dayjs(routine.end_date)) && (
-                      <span className="text-xs font-semibold text-primary bg-red-50 px-2 py-1 rounded-full shrink-0 ml-2">
-                        D-
-                        {dayjs(routine.end_date).diff(dayjs(), 'day')}
+                  <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                    {filter === 'completed' && (
+                      <span className="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-400">
+                        종료
                       </span>
                     )}
+                    {routine.todayTotal != null &&
+                      routine.todayTotal > 0 &&
+                      !routine.isCompleted && (
+                        <span
+                          className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                            routine.todayCompleted === routine.todayTotal
+                              ? 'bg-green-50 text-green-600'
+                              : 'bg-amber-50 text-amber-600'
+                          }`}
+                        >
+                          TASK : {routine.todayCompleted}/{routine.todayTotal}
+                        </span>
+                      )}
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-400">
-                  {routine.start_date && (
-                    <span>
-                      {dayjs(routine.start_date).format('MM.DD')}
-                      {' ~ '}
-                      {routine.end_date
-                        ? dayjs(routine.end_date).format('MM.DD')
-                        : '진행 중'}
-                    </span>
-                  )}
-                  {routine.tasks && routine.tasks.length > 0 && (
-                    <>
-                      <span className="text-gray-300">·</span>
-                      <span>{routine.tasks.length}개 태스크</span>
-                    </>
-                  )}
+                <div className="flex items-center gap-y-1.5 mt-1 text-sm text-gray-400 ">
                   {routine.duration_days && (
                     <>
                       <span className="text-gray-300">·</span>
                       <span>{routine.duration_days}일 목표</span>
                     </>
+                  )}
+                  {routine.start_date && (
+                    <span className="mx-2">
+                      {dayjs(routine.start_date).format('YY.MM.DD')}
+                      {' ~ '}
+                      {routine.end_date
+                        ? dayjs(routine.end_date).format('YY.MM.DD')
+                        : '진행 중'}
+                    </span>
                   )}
                 </div>
 
@@ -107,7 +122,9 @@ export default function RoutineList({
                         'linear-gradient(135deg, #ea4c89 0%, #f78fb3 50%, #ff6b81 100%)',
                     }}
                   />
-                  <div className="absolute z-10 top-1/2 -translate-y-1/2 left-3 text-xs font-medium text-white drop-shadow-sm">
+                  <div
+                    className={`absolute z-10 top-1/2 -translate-y-1/2 left-3 text-xs font-medium drop-shadow-sm ${rate === 0 ? 'text-gray-400' : 'text-white'}`}
+                  >
                     달성률 : {rate}%
                   </div>
                 </div>

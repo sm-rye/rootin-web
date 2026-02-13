@@ -13,10 +13,9 @@ export default function useToggleTask() {
       toggleTask({ id, date }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['today-summary'] });
+      queryClient.invalidateQueries({ queryKey: ['routines'] });
       if (routineId) {
         queryClient.invalidateQueries({ queryKey: ['routines', routineId] });
-      } else {
-        queryClient.invalidateQueries({ queryKey: ['routines'] });
       }
     },
     onError: (error) => {
