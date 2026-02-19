@@ -43,9 +43,6 @@ export default function SidebarProgress() {
       {/* 헤더 */}
       <div className="text-center">
         <p className="mb-3 text-sm font-semibold text-gray-800 uppercase tracking-wider text-center">
-          오늘의 달성 현황
-        </p>
-        <p className="text-xs font-semibold text-gray-400 dark:text-gray-200">
           {totalRoutines}개 루틴 진행 중
         </p>
       </div>
@@ -81,7 +78,7 @@ export default function SidebarProgress() {
           </span>
         </div>
 
-        <p className="mt-0.5 text-xs font-medium text-gray-800">
+        <p className="mt-0.5 text-xs font-medium text-gray-400">
           {getMessage(rate)}
         </p>
       </div>

@@ -27,7 +27,7 @@ export default function TaskCheckBox({
   const allDone = totalCount > 0 && completedCount === totalCount;
 
   return (
-    <section className="px-4 pb-5">
+    <section className="pb-5 lg:h-full lg:flex lg:flex-col lg:pb-0">
       <h2 className="text-xl font-bold text-foreground">
         {isCompleted ? '최종 결과' : '오늘의 체크리스트'}
       </h2>
@@ -43,6 +43,7 @@ export default function TaskCheckBox({
           allDone ? 'border-primary/30' : 'border-muted',
           'shadow-[0_8px_24px_rgba(17,24,39,0.08)]',
           'mt-3 transition-all duration-300',
+          'lg:flex-1 lg:flex lg:flex-col lg:overflow-hidden',
         ].join(' ')}
       >
         {/* Header */}
@@ -84,7 +85,7 @@ export default function TaskCheckBox({
         </header>
 
         {/* Body */}
-        <div className="px-4 py-4">
+        <div className="px-4 py-4 lg:flex-1 lg:overflow-y-auto">
           <h3 className="text-base font-semibold text-foreground">
             오늘의 테스크
           </h3>

@@ -25,17 +25,6 @@ export default function TaskRingDisplay({
   const handleDayBoxClick = (dayStatus: DailyStatus) =>
     setSelectedDayTaskStaus(dayStatus);
 
-  // 전체 달성률 계산
-  const totalSlots = taskDailyStatus.reduce(
-    (acc, d) => acc + d.status.length,
-    0,
-  );
-  const completedSlots = taskDailyStatus.reduce(
-    (acc, d) => acc + d.status.filter((s) => s.isCompleted).length,
-    0,
-  );
-  const overallRate = totalSlots > 0 ? (completedSlots / totalSlots) * 100 : 0;
-
   // 링 스타일: task idx 별로 바깥→안쪽 링
   const getRingStyle = (idx: number, isCompleted: boolean) => {
     const size = 38 - idx * 9;
@@ -58,30 +47,11 @@ export default function TaskRingDisplay({
   const isSelected = (d: DailyStatus) => d.date === selectedDayTaskStaus?.date;
 
   return (
-    <section className="px-4">
+    <section className="lg:h-full lg:flex lg:flex-col">
       <h2 className="text-xl font-bold text-foreground">달성 현황</h2>
       <p className="mt-0.5 text-sm text-gray-400">
         일별 태스크 완료 상태를 링으로 확인하세요
       </p>
-
-      {/* 전체 달성률 프로그레스 바 */}
-      <div className="mt-3">
-        <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-          <span>전체 달성률</span>
-          <span className="font-semibold text-foreground">
-            {Math.round(overallRate)}%
-          </span>
-        </div>
-        <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-500 ease-out"
-            style={{
-              width: `${overallRate}%`,
-              background: 'linear-gradient(90deg, #EA4C89 0%, #FF8833 100%)',
-            }}
-          />
-        </div>
-      </div>
 
       {/* 색상 범례 */}
       {tasks && tasks.length > 0 && (
@@ -104,7 +74,7 @@ export default function TaskRingDisplay({
       {/* 100일 대응: 스크롤 영역 (그리드 유지) */}
       <div
         className="
-          mt-3 max-h-80 overflow-auto rounded-2xl
+          mt-3 max-h-80 lg:max-h-none lg:flex-1 overflow-auto rounded-2xl
           border border-[#E5E7EB] bg-white px-3 py-8
         "
       >

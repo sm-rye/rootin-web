@@ -63,7 +63,7 @@ export default function RoutineList({
           >
             <Card
               className={`hover:shadow-md hover:-translate-y-0.5 transition ${
-                filter === 'completed' ? 'grayscale-[20%]' : ''
+                filter === 'completed' ? 'grayscale-20' : ''
               }`}
             >
               <div className="flex flex-col w-full h-full p-3.5">
@@ -114,19 +114,21 @@ export default function RoutineList({
                   )}
                 </div>
 
-                <div className="mt-6 bg-red-50/60 w-full h-10 rounded-xl overflow-hidden relative">
-                  <div
-                    className="h-10 rounded-xl shadow-md transition-all duration-700 ease-out"
-                    style={{
-                      width: animated ? `${rate}%` : '0%',
-                      background:
-                        'linear-gradient(135deg, #ea4c89 0%, #f78fb3 50%, #ff6b81 100%)',
-                    }}
-                  />
-                  <div
-                    className={`absolute z-10 top-1/2 -translate-y-1/2 left-3 text-xs font-medium drop-shadow-sm ${rate === 0 ? 'text-gray-400' : 'text-white'}`}
-                  >
-                    달성률 : {rate}%
+                <div className="mt-auto">
+                  <div className="flex justify-end mb-1">
+                    <span className="text-xs text-gray-500">
+                      달성률 {rate}%
+                    </span>
+                  </div>
+                  <div className="bg-red-50/60 w-full h-10 rounded-xl overflow-hidden">
+                    <div
+                      className="h-10 rounded-xl shadow-md transition-all duration-700 ease-out"
+                      style={{
+                        width: animated ? `${rate}%` : '0%',
+                        background:
+                          'linear-gradient(135deg, #ea4c89 0%, #f78fb3 50%, #ff6b81 100%)',
+                      }}
+                    />
                   </div>
                 </div>
               </div>
