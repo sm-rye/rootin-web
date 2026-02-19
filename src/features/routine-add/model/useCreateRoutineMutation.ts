@@ -13,6 +13,7 @@ export default function useCreateRoutineMutation() {
     mutationFn: (formData: NewRoutine) => addRoutine(formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['routines'] });
+      queryClient.invalidateQueries({ queryKey: ['overall-summary'] });
       addToast('루틴이 등록되었습니다.', 'success');
       navigate('/routines');
     },

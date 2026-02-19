@@ -12,6 +12,7 @@ export default function useDeleteRoutine() {
     mutationFn: (id: number) => deleteRoutine(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['routines'] });
+      queryClient.invalidateQueries({ queryKey: ['overall-summary'] });
       addToast('루틴이 삭제되었습니다.', 'success');
       navigate('/routines');
     },
