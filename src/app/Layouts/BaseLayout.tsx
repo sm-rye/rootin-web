@@ -8,6 +8,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 import { authStore, useGetMe } from '@/entities/auth';
 import { initTheme } from '@/shared/lib/theme';
+import { Toast, ConfirmModal } from '@/shared/Components';
 
 initTheme();
 
@@ -55,6 +56,8 @@ export default function BaseLayout() {
       <footer className="block md:hidden sticky bottom-0 z-50">
         <FooterNav />
       </footer>
+      <Toast />
+      <ConfirmModal />
     </div>
   );
 }

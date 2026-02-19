@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { getTodaySummary } from '@/entities/routine';
+import { getOverallSummary } from '@/entities/routine';
 
-export default function useTodaySummary() {
+export default function useOverallSummary() {
   return useQuery({
-    queryKey: ['today-summary'],
-    queryFn: getTodaySummary,
+    queryKey: ['overall-summary'],
+    queryFn: getOverallSummary,
     staleTime: 1000 * 60 * 5,
   });
 }

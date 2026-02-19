@@ -14,4 +14,12 @@ import Error from './Status/Error';
 // text
 import InfoText from './Text/InfoText';
 
-export { Empty, Loading, Error, InfoText };
+// toast
+import Toast from './Toast';
+
+// modal
+import ConfirmModal from './ConfirmModal';
+
+import Pagination from './Pagination';
+
+export { Empty, Loading, Error, InfoText, Toast, ConfirmModal, Pagination };

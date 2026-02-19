@@ -15,17 +15,18 @@ export const getAllRoutines = async (
   return data;
 };
 
-export interface TodaySummary {
-  totalTasks: number;
-  completedTasks: number;
+export interface OverallSummary {
+  totalRoutines: number;
+  averageRate: number;
 }
 
-export const getTodaySummary = async (): Promise<TodaySummary> => {
-  const { data } = await api.get<TodaySummary>(
-    `${ENDPOINTS.ROUTINE}/today-summary`,
-  );
-  return data;
-};
+export const getOverallSummary =
+  async (): Promise<OverallSummary> => {
+    const { data } = await api.get<OverallSummary>(
+      `${ENDPOINTS.ROUTINE}/overall-summary`,
+    );
+    return data;
+  };
 
 export const getRoutineDetail = async (id: string): Promise<Routine> => {
   const { data } = await api.get<Routine>(`${ENDPOINTS.ROUTINE}/${id}`);

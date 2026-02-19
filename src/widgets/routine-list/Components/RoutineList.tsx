@@ -89,7 +89,8 @@ export default function RoutineList({
                               : 'bg-amber-50 text-amber-600'
                           }`}
                         >
-                          TASK : {routine.todayCompleted}/{routine.todayTotal}
+                          오늘의 달성률 : {routine.todayCompleted}/
+                          {routine.todayTotal}
                         </span>
                       )}
                   </div>

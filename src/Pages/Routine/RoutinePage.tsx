@@ -4,7 +4,7 @@ import { IoMdSearch } from 'react-icons/io';
 
 import { RoutineList } from '@/widgets/routine-list';
 import { useRoutines } from '@/entities/routine';
-import { Button, Input } from '@/shared/Components';
+import { Button, Input, Pagination } from '@/shared/Components';
 
 type SortOption = 'newest' | 'oldest' | 'name';
 type FilterOption = 'active' | 'completed';
@@ -134,35 +134,9 @@ export default function RoutinePage() {
           <RoutineList routines={displayedRoutines} filter={filter} />
         </div>
 
-        <div className="flex justify-center items-center gap-2 py-4 shrink-0 border-t border-gray-100">
-          <button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-            className="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:text-gray-300 disabled:cursor-not-allowed text-gray-500 hover:bg-gray-100"
-          >
-            이전
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-            <button
-              key={num}
-              onClick={() => setPage(num)}
-              className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
-                num === page
-                  ? 'bg-primary text-white'
-                  : 'text-gray-500 hover:bg-gray-100'
-              }`}
-            >
-              {num}
-            </button>
-          ))}
-          <button
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            disabled={page === totalPages}
-            className="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:text-gray-300 disabled:cursor-not-allowed text-gray-500 hover:bg-gray-100"
-          >
-            다음
-          </button>
-        </div>
+        {displayedRoutines.length > 0 && (
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+        )}
       </section>
     </div>
   );

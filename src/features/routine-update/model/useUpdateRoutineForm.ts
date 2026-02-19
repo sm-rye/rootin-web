@@ -16,8 +16,6 @@ export default function useUpdateRoutineForm() {
   const handleRoutineInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
 
-    if (id === 'duration_days') console.log(value);
-
     setRoutineInfo((prev) =>
       prev
         ? { ...prev, [id]: id === 'duration_days' ? Number(value) : value }

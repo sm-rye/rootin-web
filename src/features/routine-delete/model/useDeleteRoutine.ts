@@ -1,21 +1,22 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { deleteRoutine } from '../api';
+import { useToastStore } from '@/shared/model/useToastStore';
 
 export default function useDeleteRoutine() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const addToast = useToastStore((s) => s.addToast);
 
   return useMutation({
     mutationFn: (id: number) => deleteRoutine(id),
-    // 삭제 성공 시 실행될 로직
     onSuccess: () => {
-      // ⭐ 핵심: 'routines' 키를 가진 전체 목록 쿼리를 무효화해서 새로고침하게 만듦
       queryClient.invalidateQueries({ queryKey: ['routines'] });
-
-      alert('삭제되었습니다.');
+      addToast('루틴이 삭제되었습니다.', 'success');
+      navigate('/routines');
     },
-    onError: (error) => {
-      console.error('삭제 실패:', error);
-      alert('삭제 중 오류가 발생했습니다.');
+    onError: () => {
+      addToast('루틴 삭제에 실패했습니다.', 'error');
     },
   });
 }

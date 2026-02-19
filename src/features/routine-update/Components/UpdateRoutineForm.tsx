@@ -35,7 +35,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
     deleteTask,
     addTask,
   } = useCreateTasks();
-  const { mutate, isSuccess, isPending } = useUpdateRoutine();
+  const { mutate, isPending } = useUpdateRoutine();
 
   const handleUpdateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,25 +51,18 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
     // 3. 유효성 검사의 실패했을 경우 함수에서 벗어난다.
     if (validatedTitle || emptyTasks) return;
 
-    // 4. 루틴 수정 폼데이터 가공
-    const formData = {
-      tasks,
-      title: routineInfo?.title,
-      description: routineInfo?.description,
-      duration_days: routineInfo?.duration_days,
-    };
-
-    console.log(formData);
-
-    // 5. 루틴 등록 함수 실행
+    // 4. 루틴 수정 함수 실행
     if (routine.id && routineInfo && routineInfo.id) {
       mutate({
         id: routine.id,
-        routine: { ...formData },
+        routine: {
+          id: routineInfo.id,
+          tasks,
+          title: routineInfo.title,
+          description: routineInfo.description,
+          duration_days: routineInfo.duration_days,
+        },
       });
-    }
-    if (isSuccess) {
-      window.alert('성공');
     }
   };
 

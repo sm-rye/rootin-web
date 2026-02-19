@@ -1,19 +1,25 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { updateRoutine } from '@/features/routine-update';
+import { useToastStore } from '@/shared/model/useToastStore';
 import type { Routine } from '@/entities/routine';
 
 export default function useUpdateRoutine() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const addToast = useToastStore((s) => s.addToast);
+
   return useMutation({
     mutationFn: ({ id, routine }: { id: number; routine: Routine }) =>
       updateRoutine(id, routine),
-    onSuccess: () => {
+    onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['routines'] });
-      alert('업데이트 되었읍니다');
+      queryClient.invalidateQueries({ queryKey: ['routines', String(id)] });
+      addToast('루틴이 수정되었습니다.', 'success');
+      navigate(`/routines/${id}`);
     },
-    onError: (error) => {
-      console.error('업데이트 실패:', error);
-      alert('업데이트 중 오류가 발생했습니다.');
+    onError: () => {
+      addToast('루틴 수정에 실패했습니다.', 'error');
     },
   });
 }
