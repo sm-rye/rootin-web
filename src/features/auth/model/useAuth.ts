@@ -3,12 +3,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { login, signup } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { authStore } from '@/entities/auth/model/store';
+import { useToastStore } from '@/shared/model/useToastStore';
 
 export default function useAuth() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const setAuth = authStore((state) => state.setAuth); // 액션 가져오기
+  const setAuth = authStore((state) => state.setAuth);
+  const addToast = useToastStore((state) => state.addToast);
 
   return useMutation({
     mutationFn: ({ mode, formData }: { mode: AuthMode; formData: Auth }) =>
@@ -27,8 +29,10 @@ export default function useAuth() {
       navigate('/routines', { replace: true });
     },
 
-    onError: (error) => {
-      console.error('인증 실패:', error);
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message || '인증에 실패했습니다. 다시 시도해주세요.';
+      addToast(message, 'error');
     },
   });
 }

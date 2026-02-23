@@ -11,5 +11,10 @@ export const login = async (loginInfo: Auth): Promise<AuthResponse> => {
   );
   return data;
 };
-export const signup = async (signupInfo: Auth): Promise<AuthResponse> =>
-  await api.post(`${ENDPOINTS.AUTH}/signup`, { user: signupInfo });
+
+export const signup = async (signupInfo: Auth): Promise<AuthResponse> => {
+  const { data } = await api.post<AuthResponse>(`${ENDPOINTS.AUTH}/signup`, {
+    user: signupInfo,
+  });
+  return data;
+};
