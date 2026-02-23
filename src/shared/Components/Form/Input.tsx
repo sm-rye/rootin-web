@@ -11,6 +11,7 @@ interface InputProps {
   inputName?: string;
   placeHolder?: string;
   helperText?: string;
+  error?: string;
   className?: string;
   inputNextText?: string;
   readOnly?: boolean | undefined;
@@ -28,6 +29,7 @@ export default function Input({
   inputName,
   placeHolder,
   helperText = '',
+  error = '',
   inputNextText = '',
   className = '',
   readOnly = false,
@@ -47,9 +49,10 @@ export default function Input({
             type={type}
             id={inputId}
             placeholder={placeHolder || ''}
-            className={`border border-gray-300 p-2 rounded-sm text-primary-black focus:border-gray-400 ${type === 'text' && 'flex-1 w-full'} ${className}`}
+            className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 ${error ? 'border-red-400' : 'border-gray-300'} ${type === 'text' && 'flex-1 w-full'} ${className}`}
             onChange={(e) => onChange?.(e)}
             onClick={() => onClick?.()}
+            onWheel={type === 'number' ? (e) => e.currentTarget.blur() : undefined}
             value={value}
             maxLength={maxLength}
             min={numLength?.min}
@@ -58,7 +61,10 @@ export default function Input({
           {inputNextText && <p> {inputNextText}</p>}
         </div>
 
-        {helperText && <InfoText text={helperText} />}
+        {error
+          ? <p className="mt-1 text-xs text-red-500">{error}</p>
+          : helperText && <InfoText text={helperText} />
+        }
       </>
     </FormElement>
   );

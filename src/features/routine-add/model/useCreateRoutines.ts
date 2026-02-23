@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { RoutineInfo } from '@/entities/routine';
+import { validateDuration } from '@/entities/routine';
 
 export default function useCreateRoutines() {
   const DEFAULT_DURATION = 7;
@@ -20,15 +21,10 @@ export default function useCreateRoutines() {
     if (id === 'title') setErrors((prev) => ({ ...prev, title: '' }));
 
     if (id === 'duration_days') {
-      const num = Number(value);
-      if (num < 1 || num > 365) {
-        setErrors((prev) => ({
-          ...prev,
-          duration_days: '기간은 1일 이상 365일 이하로 입력해주세요.',
-        }));
-      } else {
-        setErrors((prev) => ({ ...prev, duration_days: '' }));
-      }
+      setErrors((prev) => ({
+        ...prev,
+        duration_days: validateDuration(Number(value)),
+      }));
     }
 
     setRoutineInfo((prev) => ({

@@ -57,7 +57,7 @@ export default function RoutinePage() {
             <Input
               inputId="search"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               className="bg-neutral-50 px-10"
               placeHolder="루틴 검색"
             />

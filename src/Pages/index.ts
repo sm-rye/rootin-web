@@ -1,4 +1,4 @@
-import AuhtPage from './Auth/AuthPage';
+import AuthPage from './Auth/AuthPage';
 export * from './Routine';
 
-export { AuhtPage };
+export { AuthPage };

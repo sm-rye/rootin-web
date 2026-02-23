@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 
-import { validateRoutineTitle, type Routine } from '@/entities/routine';
+import { validateRoutineTitle, validateDuration, type Routine } from '@/entities/routine';
 import { validateTaskName } from '@/entities/task';
 
 import { DeleteRoutineBtn } from '@/features/routine-delete';
@@ -72,14 +72,11 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
 
     // 1. 루틴 타이틀 유효성 검사
     const validatedTitle = validateRoutineTitle(routineInfo?.title);
-    const validatedDuration =
-      (routineInfo?.duration_days ?? 0) < 1 ||
-      (routineInfo?.duration_days ?? 0) > 365
-        ? '기간은 1일 이상 365일 이하로 입력해주세요.'
-        : '';
+    const validatedDuration = validateDuration(routineInfo?.duration_days);
     setErrors({ title: validatedTitle, duration_days: validatedDuration });
 
     // 2. 태스크 유효성 검사
+    if (tasks.length === 0) return;
     const emptyTasks = validateTaskName(tasks);
     if (emptyTasks) setEmptyTasks(emptyTasks);
 
@@ -117,7 +114,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
           inputName="이름"
           value={routineInfo?.title}
           onChange={handleRoutineInputChange}
-          helperText={errors.title}
+          error={errors.title}
         />
         <Input
           inputId="description"
@@ -134,9 +131,8 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
             inputNextText={'일 동안 반복'}
             onChange={handleRoutineInputChange}
             className="w-38"
-            helperText={
-              errors.duration_days || '1~365일 사이의 숫자를 입력해주세요.'
-            }
+            error={errors.duration_days}
+            helperText="1~365일 사이의 숫자를 입력해주세요."
             numLength={{ min: 1, max: 365 }}
           />
           {hasDurationChanged && (
