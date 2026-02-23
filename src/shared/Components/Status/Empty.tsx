@@ -1,17 +1,15 @@
-import React from 'react';
-
 import { Button } from '@/shared/Components';
 import { LuClipboardPen } from 'react-icons/lu';
 
 interface EmptyProps {
-  title: string;
-  description: string;
-  actionLabel: string;
-  onAction: () => void;
+  title?: string;
+  description?: string;
+  actionLabel?: string;
+  onAction?: () => void;
 }
 
 export default function Empty({
-  title,
+  title = '데이터가 없습니다.',
   description,
   actionLabel,
   onAction,

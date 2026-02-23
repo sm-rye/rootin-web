@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { IoIosInformationCircle } from 'react-icons/io';
 
 export default function InfoText({ text }: { text: string }) {
