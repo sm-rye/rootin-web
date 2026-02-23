@@ -2,9 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { toggleTask } from '@/features/task-toggle';
 import { useParams } from 'react-router-dom';
+import { useToastStore } from '@/shared/model/useToastStore';
 
 export default function useToggleTask() {
   const queryClient = useQueryClient();
+  const addToast = useToastStore((state) => state.addToast);
 
   const { id: routineId } = useParams<{ id: string }>();
 
@@ -18,9 +20,8 @@ export default function useToggleTask() {
         queryClient.invalidateQueries({ queryKey: ['routines', routineId] });
       }
     },
-    onError: (error) => {
-      console.error('테스크 토글 실패:', error);
-      alert('토글 중 오류가 발생했습니다.');
+    onError: () => {
+      addToast('태스크 토글 중 오류가 발생했습니다.', 'error');
     },
   });
 }

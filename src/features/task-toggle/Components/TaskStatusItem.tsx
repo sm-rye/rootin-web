@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { Status } from '@/entities/routine';
 import { useToggleTask } from '@/features/task-toggle';
 import { Empty } from '@/shared/Components';
@@ -12,10 +10,12 @@ export default function TaskStatusItem({
   disabled = false,
 }: Status & { date: string; name: string | undefined; disabled?: boolean }) {
   if (!name) return <Empty />;
-  const { mutate } = useToggleTask();
+  const { mutate, isPending } = useToggleTask();
+
+  const isDisabled = disabled || isPending;
 
   const handleToggle = () => {
-    if (disabled) return;
+    if (isDisabled) return;
     mutate({ id: task_id, date });
   };
 
@@ -26,32 +26,36 @@ export default function TaskStatusItem({
         role="checkbox"
         aria-checked={isCompleted}
         onClick={handleToggle}
-        disabled={disabled}
+        disabled={isDisabled}
         className={[
           'flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center',
           'transition-all duration-200',
-          disabled ? 'cursor-default opacity-60' : '',
+          isDisabled ? 'cursor-default opacity-60' : '',
           isCompleted
             ? 'bg-primary border-primary'
-            : disabled
+            : isDisabled
               ? 'bg-gray-100 border-gray-300'
               : 'bg-white border-gray-300 hover:border-primary/50',
         ].join(' ')}
       >
-        {isCompleted && (
-          <svg
-            className="w-3 h-3 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={3}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
+        {isPending ? (
+          <span className="w-2.5 h-2.5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+        ) : (
+          isCompleted && (
+            <svg
+              className="w-3 h-3 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={3}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          )
         )}
       </button>
       <label
@@ -59,7 +63,7 @@ export default function TaskStatusItem({
         onClick={handleToggle}
         className={[
           'text-sm transition-all duration-200',
-          disabled ? 'cursor-default' : 'cursor-pointer',
+          isDisabled ? 'cursor-default' : 'cursor-pointer',
           isCompleted ? 'line-through text-gray-400' : 'text-foreground',
         ].join(' ')}
       >

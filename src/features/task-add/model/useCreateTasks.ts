@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Task } from '@/entities/task';
+import { useToastStore } from '@/shared/model/useToastStore';
 
 export default function useCreateTasks() {
   const MAX_TASK = 5;
@@ -7,9 +8,11 @@ export default function useCreateTasks() {
   const [tasks, setTasks] = useState<Task[]>([{ name: '', sort_order: 1 }]);
   const [emptyTasks, setEmptyTasks] = useState<Task[] | undefined>(undefined);
 
+  const addToast = useToastStore((state) => state.addToast);
+
   const addTask = () => {
     if (tasks.length >= MAX_TASK) {
-      window.alert(`${MAX_TASK}개 까지만 등록가능`);
+      addToast(`태스크는 최대 ${MAX_TASK}개까지 등록 가능합니다.`, 'error');
       return;
     }
 
@@ -20,7 +23,7 @@ export default function useCreateTasks() {
 
   const deleteTask = (id: number) => {
     if (tasks.length <= 1) {
-      window.alert('task는 최소 하나 이상 등록되어야함');
+      addToast('태스크는 최소 1개 이상 등록되어야 합니다.', 'error');
       return;
     }
     setTasks((prev) => {

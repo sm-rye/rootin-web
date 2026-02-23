@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { DailyStatus } from '@/entities/routine';
 import dayjs from 'dayjs';
@@ -7,21 +7,28 @@ export default function useDailyToggleTask(
   daily_status: DailyStatus[] | undefined,
 ) {
   const today = dayjs().format('YYYY-MM-DD');
+  const initializedRef = useRef(false);
 
   const [selectedDayTaskStaus, setSelectedDayTaskStaus] = useState<
     DailyStatus | undefined
   >();
 
   useEffect(() => {
-    if (daily_status) {
-      // error 아마 수정 해야할 듯
-      // 사유는 daily_status가 변경될 때마다 today로 리셋되지 않나..?
+    if (!daily_status) return;
 
-      const matchData = selectedDayTaskStaus?.date || today;
-      const found = daily_status.find((d) => d.date === matchData);
-      setSelectedDayTaskStaus(
-        found ?? daily_status[daily_status.length - 1],
-      );
+    if (!initializedRef.current) {
+      // 최초 1회만 today 기준으로 초기화
+      const found = daily_status.find((d) => d.date === today);
+      setSelectedDayTaskStaus(found ?? daily_status[daily_status.length - 1]);
+      initializedRef.current = true;
+      return;
+    }
+
+    // 이후에는 선택된 날짜를 유지하며 최신 데이터로 동기화
+    const currentDate = selectedDayTaskStaus?.date;
+    if (currentDate) {
+      const updated = daily_status.find((d) => d.date === currentDate);
+      if (updated) setSelectedDayTaskStaus(updated);
     }
   }, [daily_status]);
 
