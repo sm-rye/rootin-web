@@ -15,7 +15,7 @@ export default function RoutineCreateForm() {
   const { routineInfo, errors, setErrors, changeRoutineInput } =
     useCreateRoutines();
 
-  const { mutate, isError, isPending } = useCreateRoutineMutation();
+  const { mutate, isPending } = useCreateRoutineMutation();
 
   const {
     tasks,
@@ -34,14 +34,19 @@ export default function RoutineCreateForm() {
 
     // 1. 루틴 유효성 검사 실행
     const validatedTitle = validateRoutineTitle(routineInfo.title);
-    setErrors({ title: validatedTitle });
+    const duration = routineInfo.duration_days ?? 0;
+    const validatedDuration =
+      duration < 1 || duration > 365
+        ? '기간은 1일 이상 365일 이하로 입력해주세요.'
+        : '';
+    setErrors({ title: validatedTitle, duration_days: validatedDuration });
 
     // 2. 테스크 유효성 검사 실행
     const emptyTasks = validateTaskName(tasks);
     if (emptyTasks) setEmptyTasks(emptyTasks);
 
     // 3. 유효성 검사의 실패했을 경우 함수에서 벗어난다.
-    if (validatedTitle || emptyTasks) return;
+    if (validatedTitle || validatedDuration || emptyTasks) return;
 
     // 4. 루틴 등록 폼데이터 가공
     const routine = { tasks, ...routineInfo, user_id: user?.user_id };
@@ -80,10 +85,10 @@ export default function RoutineCreateForm() {
           inputName={'기간'}
           inputNextText={'일 동안 반복'}
           onChange={changeRoutineInput}
-          placeHolder={'루틴에 대한 설명이나 목표를 적어보세요.'}
+          placeHolder={'1~365'}
           className="w-38"
-          helperText="1~100일 사이의 숫자를 입력해주세요."
-          numLength={{ min: 1, max: 100 }}
+          helperText={errors.duration_days || '1~365일 사이의 숫자를 입력해주세요.'}
+          numLength={{ min: 1, max: 365 }}
         />
 
         <FormElement hasMargin>

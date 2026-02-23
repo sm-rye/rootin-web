@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoMdSearch } from 'react-icons/io';
 
 import { RoutineList } from '@/widgets/routine-list';
 import { useRoutines } from '@/entities/routine';
-import { Button, Input, Pagination } from '@/shared/Components';
+import { Button, Input, Pagination, Loading, Error } from '@/shared/Components';
 
 type SortOption = 'newest' | 'oldest' | 'name';
 type FilterOption = 'active' | 'completed';
@@ -43,8 +43,8 @@ export default function RoutinePage() {
     return data.routines.filter((r) => r.title.toLowerCase().includes(keyword));
   }, [data?.routines, search]);
 
-  if (isError) return <div>error</div>;
-  if (isLoading) return <div> loading</div>;
+  if (isLoading) return <Loading />;
+  if (isError) return <Error />;
 
   return (
     <div className="w-full h-full flex flex-col overflow-hidden">

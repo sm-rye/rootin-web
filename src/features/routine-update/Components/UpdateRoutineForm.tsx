@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { validateRoutineTitle, type Routine } from '@/entities/routine';
 import { validateTaskName } from '@/entities/task';
@@ -16,6 +16,8 @@ import {
   useUpdateRoutineForm,
 } from '@/features/routine-update';
 import { TaskCreateBtn, TaskEditor, useCreateTasks } from '@/features/task-add';
+import { useConfirmStore } from '@/shared/model/useConfirmStore';
+import { IoWarningOutline } from 'react-icons/io5';
 
 export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
   const {
@@ -28,7 +30,6 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
   const {
     tasks,
     emptyTasks,
-
     setEmptyTasks,
     changeTaskName,
     setTasks,
@@ -36,22 +37,22 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
     addTask,
   } = useCreateTasks();
   const { mutate, isPending } = useUpdateRoutine();
+  const openConfirm = useConfirmStore((s) => s.openConfirm);
 
-  const handleUpdateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // 기존 값과 비교하여 기록에 영향을 주는 변경 여부 감지
+  const hasDurationChanged =
+    routineInfo?.duration_days !== undefined &&
+    routineInfo.duration_days !== routine.duration_days;
 
-    // 1.루틴 타이틀 유효성 검사
-    const validatedTitle = validateRoutineTitle(routineInfo?.title);
-    setErrors({ title: validatedTitle });
+  const hasTasksChanged = useMemo(() => {
+    const original = routine.tasks ?? [];
+    if (tasks.length !== original.length) return true;
+    return tasks.some((t, i) => t.name !== original[i]?.name);
+  }, [tasks, routine.tasks]);
 
-    // 2. 테스크 유효성 검사 실행
-    const emptyTasks = validateTaskName(tasks);
-    if (emptyTasks) setEmptyTasks(emptyTasks);
+  const hasImpactingChanges = hasDurationChanged || hasTasksChanged;
 
-    // 3. 유효성 검사의 실패했을 경우 함수에서 벗어난다.
-    if (validatedTitle || emptyTasks) return;
-
-    // 4. 루틴 수정 함수 실행
+  const executeUpdate = () => {
     if (routine.id && routineInfo && routineInfo.id) {
       mutate({
         id: routine.id,
@@ -66,14 +67,42 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
     }
   };
 
+  const handleUpdateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // 1. 루틴 타이틀 유효성 검사
+    const validatedTitle = validateRoutineTitle(routineInfo?.title);
+    const validatedDuration =
+      (routineInfo?.duration_days ?? 0) < 1 ||
+      (routineInfo?.duration_days ?? 0) > 365
+        ? '기간은 1일 이상 365일 이하로 입력해주세요.'
+        : '';
+    setErrors({ title: validatedTitle, duration_days: validatedDuration });
+
+    // 2. 태스크 유효성 검사
+    const emptyTasks = validateTaskName(tasks);
+    if (emptyTasks) setEmptyTasks(emptyTasks);
+
+    // 3. 유효성 검사 실패 시 중단
+    if (validatedTitle || validatedDuration || emptyTasks) return;
+
+    // 4. 기록에 영향을 주는 변경이 있으면 확인 모달 표시
+    if (hasImpactingChanges) {
+      openConfirm(
+        '기간 또는 태스크 변경 시 기존 달성 기록에 영향을 줄 수 있습니다.\n계속 저장하시겠습니까?',
+        executeUpdate,
+        '저장',
+      );
+      return;
+    }
+
+    executeUpdate();
+  };
+
   useEffect(() => {
     if (routine) {
-      setRoutineInfo({
-        ...routine,
-      });
-      if (routine.tasks) {
-        setTasks(routine.tasks);
-      }
+      setRoutineInfo({ ...routine });
+      if (routine.tasks) setTasks(routine.tasks);
     }
   }, [routine]);
 
@@ -96,22 +125,40 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
           value={routineInfo?.description}
           onChange={handleRoutineInputChange}
         />
-        <Input
-          inputId="duration_days"
-          type="number"
-          value={routineInfo?.duration_days}
-          inputName={'기간'}
-          inputNextText={'일 동안 반복'}
-          onChange={handleRoutineInputChange}
-          className="w-38"
-          helperText="1~100일 사이의 숫자를 입력해주세요."
-          numLength={{ min: 1, max: 100 }}
-        />
+        <div className="relative">
+          <Input
+            inputId="duration_days"
+            type="number"
+            value={routineInfo?.duration_days}
+            inputName={'기간'}
+            inputNextText={'일 동안 반복'}
+            onChange={handleRoutineInputChange}
+            className="w-38"
+            helperText={
+              errors.duration_days || '1~365일 사이의 숫자를 입력해주세요.'
+            }
+            numLength={{ min: 1, max: 365 }}
+          />
+          {hasDurationChanged && (
+            <p className="flex items-center gap-1 text-xs text-amber-500 absolute top-30 ">
+              <IoWarningOutline className="shrink-0" />
+              기간 변경 시 기존 달성 기록에 영향을 줄 수 있습니다.
+            </p>
+          )}
+        </div>
+
         <FormElement hasMargin>
           <>
             <Label inputName="실천 행동 수정" />
             <TaskCreateBtn addTask={addTask} />
-            <InfoText text="실천 행동 수정 시 기존 기록에 영향을 줄 수 있습니다." />
+            {hasTasksChanged ? (
+              <p className="flex items-center gap-1 text-xs text-amber-500 mt-1">
+                <IoWarningOutline className="shrink-0" />
+                태스크 변경 시 기존 달성 기록에 영향을 줄 수 있습니다.
+              </p>
+            ) : (
+              <InfoText text="실천 행동 수정 시 기존 기록에 영향을 줄 수 있습니다." />
+            )}
 
             {tasks.map((t) => (
               <TaskEditor

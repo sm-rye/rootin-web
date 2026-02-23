@@ -7,6 +7,7 @@ export default function useUpdateRoutineForm() {
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({
     title: '',
+    duration_days: '',
   });
 
   const handleRoutineEditBtn = () => {
@@ -15,6 +16,15 @@ export default function useUpdateRoutineForm() {
 
   const handleRoutineInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
+
+    if (id === 'duration_days') {
+      const num = Number(value);
+      setErrors((prev) => ({
+        ...prev,
+        duration_days:
+          num < 1 || num > 365 ? '기간은 1일 이상 365일 이하로 입력해주세요.' : '',
+      }));
+    }
 
     setRoutineInfo((prev) =>
       prev

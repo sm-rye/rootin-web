@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 import type { Routine } from '@/entities/routine';
@@ -31,9 +31,12 @@ export default function RoutineList({
   if (routines.length <= 0) {
     if (filter === 'completed') {
       return (
-        <p className="mt-20 text-center text-neutral-400">
-          종료된 루틴이 없습니다.
-        </p>
+        <div className="mt-20">
+          <Empty
+            title="종료된 루틴이 없습니다."
+            description="완료한 루틴이 여기에 표시됩니다."
+          />
+        </div>
       );
     }
     return (
@@ -117,7 +120,7 @@ export default function RoutineList({
                 <div className="mt-auto">
                   <div className="flex justify-end mb-1">
                     <span className="text-xs text-gray-500">
-                      달성률 {rate}%
+                      {rate === 100 ? '🎉 ' : ''}달성률 {rate}%
                     </span>
                   </div>
                   <div className="bg-red-50/60 w-full h-10 rounded-xl overflow-hidden">
@@ -126,7 +129,9 @@ export default function RoutineList({
                       style={{
                         width: animated ? `${rate}%` : '0%',
                         background:
-                          'linear-gradient(135deg, #ea4c89 0%, #f78fb3 50%, #ff6b81 100%)',
+                          filter === 'completed'
+                            ? 'linear-gradient(135deg, #ea4c89 0%, #f78fb3 50%, #ff6b81 100%)'
+                            : 'linear-gradient(90deg, #EA4C89 0%, #FF8833 100%)',
                       }}
                     />
                   </div>
