@@ -1,7 +1,7 @@
 import { useConfirmStore } from '@/shared/model/useConfirmStore';
 
 export default function ConfirmModal() {
-  const { isOpen, message, onConfirm, close } = useConfirmStore();
+  const { isOpen, message, confirmLabel, onConfirm, close } = useConfirmStore();
 
   if (!isOpen) return null;
 
@@ -35,7 +35,7 @@ export default function ConfirmModal() {
             onClick={handleConfirm}
             className="flex-1 py-2.5 rounded-xl text-sm font-medium text-white bg-primary hover:bg-primary/85 transition"
           >
-            삭제
+            {confirmLabel}
           </button>
         </div>
       </div>

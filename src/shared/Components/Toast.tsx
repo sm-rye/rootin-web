@@ -21,9 +21,7 @@ function ToastItem({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const left = Math.ceil(
-        (duration - (Date.now() - createdAt)) / 1000,
-      );
+      const left = Math.ceil((duration - (Date.now() - createdAt)) / 1000);
       if (left <= 0) {
         clearInterval(interval);
       } else {
@@ -41,7 +39,7 @@ function ToastItem({
         flex items-center gap-3 pl-4 pr-3 py-3 rounded-2xl shadow-xl
         text-sm font-medium backdrop-blur-sm
         animate-[toastIn_0.3s_ease-out]
-        ${isSuccess ? 'bg-primary/95 text-white' : 'bg-red-500/95 text-white'}
+        ${isSuccess ? 'bg-primary/80 text-white' : 'bg-red-500/55 text-white'}
       `}
       onClick={() => removeToast(id)}
     >
