@@ -27,7 +27,7 @@ export default function TaskRingDisplay({
 
   // 링 스타일: task idx 별로 바깥→안쪽 링
   const getRingStyle = (idx: number, isCompleted: boolean) => {
-    const size = 38 - idx * 9;
+    const size = Math.max(4, 38 - idx * 9);
     const border = 4;
 
     const ringColor = isCompleted
@@ -44,6 +44,13 @@ export default function TaskRingDisplay({
     } as React.CSSProperties;
   };
 
+  const now = new Date();
+  const today = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, '0'),
+    String(now.getDate()).padStart(2, '0'),
+  ].join('-');
+  const isToday = (d: DailyStatus) => d.date === today;
   const isSelected = (d: DailyStatus) => d.date === selectedDayTaskStaus?.date;
 
   return (
@@ -86,6 +93,7 @@ export default function TaskRingDisplay({
         >
           {taskDailyStatus.map((d) => {
             const selected = isSelected(d);
+            const today_ = isToday(d);
 
             return (
               <button
@@ -94,14 +102,17 @@ export default function TaskRingDisplay({
                 onClick={() => handleDayBoxClick(d)}
                 className={[
                   'group relative rounded-xl p-2 text-left transition-all duration-200',
-                  'bg-background hover:bg-white',
+                  'bg-background hover:bg-white hover:border hover:border-primary/30 hover:shadow-[0_3px_8px_rgba(234,76,137,0.18)]',
                   'border',
                   selected
                     ? 'border-primary shadow-[0_6px_16px_rgba(234,76,137,0.18)]'
-                    : 'border-transparent',
+                    : today_
+                      ? 'border-primary/40'
+                      : 'border-transparent',
                   selected ? 'ring-2 ring-primary/25' : 'ring-0',
                 ].join(' ')}
                 aria-pressed={selected}
+                aria-current={today_ ? 'date' : undefined}
               >
                 {/* 호버 날짜 툴팁 */}
                 <span
@@ -122,11 +133,16 @@ export default function TaskRingDisplay({
                   <span
                     className={[
                       'text-xs font-medium',
-                      selected ? 'text-primary' : 'text-foreground',
+                      selected || today_ ? 'text-primary' : 'text-foreground',
                     ].join(' ')}
                   >
                     {d.day}
                   </span>
+                  {today_ && (
+                    <span className="text-[9px] font-semibold text-white bg-primary rounded-full px-1.5 py-1 leading-none">
+                      오늘
+                    </span>
+                  )}
                 </div>
 
                 {/* rings */}
