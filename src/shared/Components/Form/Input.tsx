@@ -51,7 +51,7 @@ export default function Input({
             type={type}
             id={inputId}
             placeholder={placeHolder || ''}
-            className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 ${error ? 'border-red-400' : 'border-gray-300'} ${type === 'text' && 'flex-1 w-full'} ${endAdornment ? 'pr-9' : ''} ${className}`}
+            className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 ${error ? 'border-red-400' : 'border-gray-300'} ${type === 'text' && !endAdornment && 'flex-1 w-full'} ${endAdornment ? 'pr-9' : ''} ${className}`}
             onChange={(e) => onChange?.(e)}
             onClick={() => onClick?.()}
             onWheel={type === 'number' ? (e) => e.currentTarget.blur() : undefined}
