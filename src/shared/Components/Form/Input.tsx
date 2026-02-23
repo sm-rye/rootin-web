@@ -14,6 +14,7 @@ interface InputProps {
   error?: string;
   className?: string;
   inputNextText?: string;
+  endAdornment?: React.ReactNode;
   readOnly?: boolean | undefined;
   maxLength?: number | undefined;
   numLength?: { min: number; max: number } | undefined;
@@ -31,6 +32,7 @@ export default function Input({
   helperText = '',
   error = '',
   inputNextText = '',
+  endAdornment,
   className = '',
   readOnly = false,
   maxLength,
@@ -44,21 +46,28 @@ export default function Input({
       <>
         {inputName && <Label inputId={inputId} inputName={inputName} />}
         <div className="flex items-center gap-2">
-          <input
-            readOnly={readOnly}
-            type={type}
-            id={inputId}
-            placeholder={placeHolder || ''}
-            className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 ${error ? 'border-red-400' : 'border-gray-300'} ${type === 'text' && 'flex-1 w-full'} ${className}`}
-            onChange={(e) => onChange?.(e)}
-            onClick={() => onClick?.()}
-            onWheel={type === 'number' ? (e) => e.currentTarget.blur() : undefined}
-            value={value}
-            maxLength={maxLength}
-            min={numLength?.min}
-            max={numLength?.max}
-          />
-          {inputNextText && <p> {inputNextText}</p>}
+          <div className="relative flex-1 flex items-center">
+            <input
+              readOnly={readOnly}
+              type={type}
+              id={inputId}
+              placeholder={placeHolder || ''}
+              className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 w-full ${error ? 'border-red-400' : 'border-gray-300'} ${endAdornment ? 'pr-9' : ''} ${className}`}
+              onChange={(e) => onChange?.(e)}
+              onClick={() => onClick?.()}
+              onWheel={type === 'number' ? (e) => e.currentTarget.blur() : undefined}
+              value={value}
+              maxLength={maxLength}
+              min={numLength?.min}
+              max={numLength?.max}
+            />
+            {endAdornment && (
+              <span className="absolute right-2 flex items-center">
+                {endAdornment}
+              </span>
+            )}
+          </div>
+          {inputNextText && <p>{inputNextText}</p>}
         </div>
 
         {error

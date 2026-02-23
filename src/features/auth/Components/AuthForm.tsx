@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { AuthMode } from '@/entities/auth';
 import { Button, Input } from '@/shared/Components';
 import useAuthForm from '../model/useAuthForm';
 import useAuth from '../model/useAuth';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { LuEye, LuEyeOff } from 'react-icons/lu';
 
 import {
   validatePassword,
@@ -19,6 +20,7 @@ export default function AuthForm({
   handleAuthMode: () => void;
 }) {
   const isSignup = mode === 'signup';
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     authFormData,
@@ -84,7 +86,7 @@ export default function AuthForm({
           type="email"
           className="w-80"
           placeHolder="이메일을 입력해주세요"
-          helperText={error.email}
+          error={error.email}
         />
         <Input
           inputName="Password"
@@ -92,10 +94,20 @@ export default function AuthForm({
           onChange={onChangeAuthInput}
           value={authFormData.password}
           maxLength={20}
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           className="w-80"
           placeHolder="비밀번호를 입력해주세요"
-          helperText={error.password}
+          error={error.password}
+          endAdornment={
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+            >
+              {showPassword ? <LuEyeOff className="w-4 h-4" /> : <LuEye className="w-4 h-4" />}
+            </button>
+          }
         />
 
         {isSignup && (
@@ -106,7 +118,7 @@ export default function AuthForm({
             value={authFormData.nickname}
             className="w-80!"
             placeHolder="닉네임을 입력해주세요"
-            helperText={error.nickname}
+            error={error.nickname}
           />
         )}
         <div className="flex items-center gap-2  w-80">
