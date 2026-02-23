@@ -5,6 +5,7 @@ import useAuthForm from '../model/useAuthForm';
 import useAuth from '../model/useAuth';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { LuEye, LuEyeOff } from 'react-icons/lu';
+import { useConfirmStore } from '@/shared/model/useConfirmStore';
 
 import {
   validatePassword,
@@ -21,6 +22,7 @@ export default function AuthForm({
 }) {
   const isSignup = mode === 'signup';
   const [showPassword, setShowPassword] = useState(false);
+  const openConfirm = useConfirmStore((s) => s.openConfirm);
 
   const {
     authFormData,
@@ -105,7 +107,11 @@ export default function AuthForm({
               className="text-gray-400 hover:text-gray-600 transition-colors"
               aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
-              {showPassword ? <LuEyeOff className="w-4 h-4" /> : <LuEye className="w-4 h-4" />}
+              {showPassword ? (
+                <LuEyeOff className="w-4 h-4" />
+              ) : (
+                <LuEye className="w-4 h-4" />
+              )}
             </button>
           }
         />
@@ -127,13 +133,14 @@ export default function AuthForm({
             type="checkbox"
             onChange={() => {
               if (authFormData.nickname) {
-                const isConfirmed = window.confirm(
-                  '회원가입을 취소할 경우 닉네임 데이터를 사라집니다.',
+                openConfirm(
+                  '회원가입을 취소할 경우 닉네임 데이터는 사라집니다.',
+                  () => {
+                    removeNickname();
+                    handleAuthMode();
+                  },
+                  '취소하기',
                 );
-                if (isConfirmed) {
-                  removeNickname();
-                  handleAuthMode();
-                }
               } else {
                 if (!isSignup) {
                   setAuthFormData((prev) => ({ ...prev, nickname: '' }));
