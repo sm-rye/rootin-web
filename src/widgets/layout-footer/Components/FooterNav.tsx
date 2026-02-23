@@ -3,7 +3,7 @@ import { NAV_ITEMS } from '@/shared/constants/navigation';
 
 export default function FooterNav() {
   return (
-    <footer className="bg-white border-t border-gray-200 shadow-sm dark:bg-gray-900 dark:border-gray-700">
+    <footer className="bg-white border-t border-gray-200 shadow-sm">
       <nav className="flex justify-around">
         {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
           <NavLink

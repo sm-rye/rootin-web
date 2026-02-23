@@ -21,64 +21,44 @@ export default function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  // 기본 스타일
   const baseStyles =
     'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none';
 
-  // variant별 스타일
   const variantStyles = {
     solid: {
-      primary:
-        'bg-primary text-white hover:opacity-90 focus:none dark:bg-primary-700 dark:hover:bg-primary-800',
-      secondary:
-        'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500 dark:bg-gray-700 dark:hover:bg-gray-800',
-      danger:
-        'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 dark:bg-red-700 dark:hover:bg-red-800',
-      success:
-        'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 dark:bg-green-700 dark:hover:bg-green-800',
+      primary: 'bg-primary text-white hover:opacity-90',
+      secondary: 'bg-gray-600 text-white hover:bg-gray-700',
+      danger: 'bg-red-600 text-white hover:bg-red-700',
+      success: 'bg-green-600 text-white hover:bg-green-700',
     },
     outline: {
-      primary:
-        'border-2 border-primary text-primary hover:bg-primary-50 focus:ring-primary dark:border-primary-500 dark:text-primary-400 dark:hover:bg-primary-950',
-      secondary:
-        'border-2 border-gray-600 text-gray-600 hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-500 dark:text-gray-400 dark:hover:bg-gray-950',
-      danger:
-        'border-2 border-red-600 text-red-600 hover:bg-red-50 focus:ring-red-500 dark:border-red-500 dark:text-red-400 dark:hover:bg-red-950',
-      success:
-        'border-2 border-green-600 text-green-600 hover:bg-green-50 focus:ring-green-500 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-950',
+      primary: 'border-2 border-primary text-primary hover:bg-primary-50',
+      secondary: 'border-2 border-gray-600 text-gray-600 hover:bg-gray-50',
+      danger: 'border-2 border-red-600 text-red-600 hover:bg-red-50',
+      success: 'border-2 border-green-600 text-green-600 hover:bg-green-50',
     },
     dashed: {
       primary:
-        'border-1 border-dashed border-primary text-primary hover:bg-primary-50 focus:ring-primary dark:border-primary-500 dark:text-primary-400 dark:hover:bg-primary-950',
-      secondary:
-        'border-2 border-gray-600 text-gray-600 hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-500 dark:text-gray-400 dark:hover:bg-gray-950',
-      danger:
-        'border-2 border-red-600 text-red-600 hover:bg-red-50 focus:ring-red-500 dark:border-red-500 dark:text-red-400 dark:hover:bg-red-950',
-      success:
-        'border-2 border-green-600 text-green-600 hover:bg-green-50 focus:ring-green-500 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-950',
+        'border-1 border-dashed border-primary text-primary hover:bg-primary-50',
+      secondary: 'border-2 border-gray-600 text-gray-600 hover:bg-gray-50',
+      danger: 'border-2 border-red-600 text-red-600 hover:bg-red-50',
+      success: 'border-2 border-green-600 text-green-600 hover:bg-green-50',
     },
     ghost: {
       primary:
-        'text-primary hover:bg-primary focus:ring-primary dark:text-primary  dark:hover:bg-primary hover:text-white',
-      secondary:
-        'text-gray-600 hover:bg-gray-50 focus:ring-gray-500 dark:text-gray-400 dark:hover:bg-gray-950',
-      danger:
-        'text-red-600 hover:bg-red-50 focus:ring-red-500 dark:text-red-400 dark:hover:bg-red-950',
-      success:
-        'text-green-600 hover:bg-green-50 focus:ring-green-500 dark:text-green-400 dark:hover:bg-green-950',
+        'text-primary hover:bg-primary hover:text-white',
+      secondary: 'text-gray-600 hover:bg-gray-50',
+      danger: 'text-red-600 hover:bg-red-50',
+      success: 'text-green-600 hover:bg-green-50',
     },
     link: {
-      primary:
-        'text-primary underline-offset-4 hover:underline dark:text-primary-400',
-      secondary: 'underline-offset-4 hover:underline ',
-      danger:
-        'text-red-600 underline-offset-4 hover:underline dark:text-red-400',
-      success:
-        'text-green-600 underline-offset-4 hover:underline dark:text-green-400',
+      primary: 'text-primary underline-offset-4 hover:underline',
+      secondary: 'underline-offset-4 hover:underline',
+      danger: 'text-red-600 underline-offset-4 hover:underline',
+      success: 'text-green-600 underline-offset-4 hover:underline',
     },
   };
 
-  // size별 스타일
   const sizeStyles = {
     sm: 'h-8 px-3 text-sm',
     md: 'h-10 px-4 text-base',

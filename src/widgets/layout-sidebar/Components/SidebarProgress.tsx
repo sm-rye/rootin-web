@@ -24,7 +24,7 @@ export default function SidebarProgress() {
 
   if (totalRoutines === 0) {
     return (
-      <div className="mb-4 rounded-xl bg-pink-50 p-4 dark:bg-gray-800">
+      <div className="mb-4 rounded-xl bg-pink-50 p-4">
         <p className="mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
           오늘의 달성 현황
         </p>
@@ -39,7 +39,7 @@ export default function SidebarProgress() {
   const offset = CIRCUMFERENCE - (rate / 100) * CIRCUMFERENCE;
 
   return (
-    <div className="mb-4 rounded-xl bg-pink-50 p-4 dark:bg-gray-800">
+    <div className="mb-4 rounded-xl bg-pink-50 p-4">
       {/* 헤더 */}
       <div className="text-center">
         <p className="mb-3 text-sm font-semibold text-gray-800 uppercase tracking-wider text-center">
@@ -58,7 +58,6 @@ export default function SidebarProgress() {
               fill="none"
               stroke="#E5E7EB"
               strokeWidth={STROKE}
-              className="dark:stroke-gray-600"
             />
             <circle
               cx={SIZE / 2}

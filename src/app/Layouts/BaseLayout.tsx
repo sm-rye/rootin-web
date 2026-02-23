@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Header } from '@/widgets/layout-header';
 import { FooterNav } from '@/widgets/layout-footer';
@@ -7,19 +7,15 @@ import { Sidebar } from '@/widgets/layout-sidebar';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { authStore, useGetMe } from '@/entities/auth';
-import { initTheme } from '@/shared/lib/theme';
 import { Toast, ConfirmModal } from '@/shared/Components';
-
-initTheme();
 
 export default function BaseLayout() {
   const navigate = useNavigate();
   const { setAuth, logout } = authStore();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // 1. 토큰 존재 여부 확인
   const token = localStorage.getItem('token');
 
-  // 2. React Query 훅 사용 (토큰이 있을 때만 실행되도록 enabled 처리)
   const { data, isSuccess, isError, isLoading } = useGetMe(!!token);
 
   useEffect(() => {
@@ -30,23 +26,25 @@ export default function BaseLayout() {
     }
 
     if (isError) {
-      // 토큰이 유효하지 않은 경우 정리
       localStorage.removeItem('token');
       logout();
       navigate('/auth', { replace: true });
     }
   }, [isSuccess, isError, data, setAuth, logout]);
 
-  // 토큰은 있는데 아직 데이터를 가져오는 중이라면 '대기 상태'를 반환
   if (token && isLoading) {
     return <div>사용자 정보를 불러오는 중...</div>;
   }
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <Header />
+      <Header onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
       <div className="flex-1 flex min-h-0">
-        <aside className="hidden md:block w-64 border-r border-gray-200">
+        <aside
+          className={`hidden md:block overflow-hidden transition-all duration-300 ease-in-out ${
+            sidebarOpen ? 'w-64 border-r border-gray-200' : 'w-0'
+          }`}
+        >
           <Sidebar />
         </aside>
         <main className="flex-1 min-h-0">

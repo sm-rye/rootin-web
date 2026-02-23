@@ -45,19 +45,6 @@
   --primary-border: #e5e7eb;
 }
 
-.dark-theme {
-  --primary-color: #ea4c89;
-  --primary-border: #e5e7eb;
-  --secondary-color: rgb(84, 76, 102);
-  --point-color: rgb(240, 255, 72);
-  --text-color: white;
-}
-
-body {
-  transition:
-    background-color 0.3s,
-    color 0.3s; /* 부드러운 전환 효과 */
-}
 
 /* Chrome, Safari, Edge */
 ::-webkit-scrollbar {
