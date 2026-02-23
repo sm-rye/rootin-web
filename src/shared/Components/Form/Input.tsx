@@ -45,28 +45,26 @@ export default function Input({
     <FormElement hasMargin={Boolean(inputName)}>
       <>
         {inputName && <Label inputId={inputId} inputName={inputName} />}
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 flex items-center">
-            <input
-              readOnly={readOnly}
-              type={type}
-              id={inputId}
-              placeholder={placeHolder || ''}
-              className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 w-full ${error ? 'border-red-400' : 'border-gray-300'} ${endAdornment ? 'pr-9' : ''} ${className}`}
-              onChange={(e) => onChange?.(e)}
-              onClick={() => onClick?.()}
-              onWheel={type === 'number' ? (e) => e.currentTarget.blur() : undefined}
-              value={value}
-              maxLength={maxLength}
-              min={numLength?.min}
-              max={numLength?.max}
-            />
-            {endAdornment && (
-              <span className="absolute right-2 flex items-center">
-                {endAdornment}
-              </span>
-            )}
-          </div>
+        <div className="relative flex items-center gap-2">
+          <input
+            readOnly={readOnly}
+            type={type}
+            id={inputId}
+            placeholder={placeHolder || ''}
+            className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 ${error ? 'border-red-400' : 'border-gray-300'} ${type === 'text' && 'flex-1 w-full'} ${endAdornment ? 'pr-9' : ''} ${className}`}
+            onChange={(e) => onChange?.(e)}
+            onClick={() => onClick?.()}
+            onWheel={type === 'number' ? (e) => e.currentTarget.blur() : undefined}
+            value={value}
+            maxLength={maxLength}
+            min={numLength?.min}
+            max={numLength?.max}
+          />
+          {endAdornment && (
+            <span className="absolute right-2 flex items-center">
+              {endAdornment}
+            </span>
+          )}
           {inputNextText && <p>{inputNextText}</p>}
         </div>
 
