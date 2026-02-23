@@ -72,8 +72,7 @@ export default function AuthForm({
       {/* 에러가 발생했을 때만 메시지 노출 */}
       {isError && (
         <p className="text-red-500 text-sm absolute -top-7">
-          {responseErr.response?.data?.message ||
-            '알 수 없는 오류가 발생했습니다.'}
+          {responseErr.response?.data?.message || '인증에 실패했습니다.'}
         </p>
       )}
       <fieldset

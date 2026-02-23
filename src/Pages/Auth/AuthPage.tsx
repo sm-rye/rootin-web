@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { AuthMode } from '@/entities/auth';
 import AuthForm from '@/features/auth/Components/AuthForm';
+import { ConfirmModal, Toast } from '@/shared/Components';
 
 export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('login');
@@ -12,6 +13,8 @@ export default function AuthPage() {
       <div className="blob blob1" />
       <div className="blob blob2" />
       <div className="blob blob3" />
+      <Toast />
+      <ConfirmModal />
       <div className="w-full max-w-112.5 px-4 lg:px-0 z-50 ">
         <div className="p-10 shadow-xl border border-gray-200 flex flex-col gap-y-8 bg-white rounded-2xl ">
           <header className="flex flex-col items-center gap-y-2">
