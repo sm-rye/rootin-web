@@ -1,5 +1,7 @@
 import { MdMenu } from 'react-icons/md';
 
+import { BsLayoutSidebar } from 'react-icons/bs';
+
 interface HeaderProps {
   onToggleSidebar?: () => void;
 }
@@ -12,7 +14,7 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
           onClick={onToggleSidebar}
           className="hidden md:flex p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
         >
-          <MdMenu size={22} />
+          <BsLayoutSidebar size={18} />
         </button>
       </div>
       <span>Rootin</span>

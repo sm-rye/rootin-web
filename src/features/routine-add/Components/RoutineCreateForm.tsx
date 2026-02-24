@@ -8,7 +8,6 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 import { useCreateTasks, TaskEditor } from '@/features/task-add';
 import { Input, Button, Label, FormElement } from '@/shared/Components';
-import { authStore } from '@/entities/auth';
 import useCreateRoutineMutation from '../model/useCreateRoutineMutation';
 
 export default function RoutineCreateForm() {
@@ -20,14 +19,11 @@ export default function RoutineCreateForm() {
   const {
     tasks,
     emptyTasks,
-
     setEmptyTasks,
     addTask,
     deleteTask,
     changeTaskName,
   } = useCreateTasks();
-
-  const user = authStore((state) => state.user);
 
   const submitRoutine = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,11 +40,8 @@ export default function RoutineCreateForm() {
     // 3. 유효성 검사의 실패했을 경우 함수에서 벗어난다.
     if (validatedTitle || validatedDuration || emptyTasks) return;
 
-    // 4. 루틴 등록 폼데이터 가공
-    const routine = { tasks, ...routineInfo, user_id: user?.user_id };
-
-    // 5. 루틴 등록 함수 실행
-    mutate(routine);
+    // 4. 루틴 등록 함수 실행 (user_id는 서버에서 JWT로 처리)
+    mutate({ tasks, ...routineInfo });
   };
 
   return (

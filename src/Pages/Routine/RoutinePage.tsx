@@ -51,13 +51,16 @@ export default function RoutinePage() {
       <header className="flex flex-col gap-y-2 p-2.5 lg:px-8 h-24 justify-center">
         <div className="flex gap-2">
           <div className="relative flex-1">
-            <span className="absolute left-1.5 text-2xl h-full flex items-center justify-center">
+            <span className="absolute left-1.5 text-2xl h-full flex items-center justify-center z-100">
               <IoMdSearch />
             </span>
             <Input
               inputId="search"
               value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               className="bg-neutral-50 px-10"
               placeHolder="루틴 검색"
             />
@@ -135,7 +138,11 @@ export default function RoutinePage() {
         </div>
 
         {displayedRoutines.length > 0 && (
-          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
         )}
       </section>
     </div>

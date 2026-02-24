@@ -5,6 +5,7 @@ import {
   RoutinePage,
   RoutineDetailPage,
   AuthPage,
+  ProfilePage,
 } from '@/Pages';
 
 import BaseLayout from '../Layouts/BaseLayout';
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: 'routines/:id',
         element: <RoutineDetailPage />,
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage />,
       },
     ],
   },
