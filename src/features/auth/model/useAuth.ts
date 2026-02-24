@@ -20,7 +20,8 @@ export default function useAuth() {
 
       // 1. token 셋팅
       localStorage.setItem('token', token);
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      // 이전 세션의 에러 캐시를 초기화 (재로그인 시 stale error로 인한 즉시 logout 방지)
+      queryClient.resetQueries({ queryKey: ['user'] });
 
       //2. user 응답값 스토어 저장
       setAuth(user);

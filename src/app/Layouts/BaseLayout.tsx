@@ -16,7 +16,7 @@ export default function BaseLayout() {
 
   const token = localStorage.getItem('token');
 
-  const { data, isSuccess, isError, isLoading } = useGetMe(!!token);
+  const { data, isSuccess, isError, isLoading, isFetching } = useGetMe(!!token);
 
   useEffect(() => {
     if (!token) navigate('/auth', { replace: true });
@@ -25,12 +25,12 @@ export default function BaseLayout() {
       setAuth(data.user);
     }
 
-    if (isError) {
+    if (isError && !isFetching) {
       localStorage.removeItem('token');
       logout();
       navigate('/auth', { replace: true });
     }
-  }, [isSuccess, isError, data, setAuth, logout]);
+  }, [isSuccess, isError, isFetching, data, setAuth, logout]);
 
   if (token && isLoading) {
     return <div>사용자 정보를 불러오는 중...</div>;
