@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { authStore } from '@/entities/auth/model/store';
 import { useConfirmStore } from '@/shared/model/useConfirmStore';
@@ -9,6 +10,7 @@ export default function ProfilePage() {
   const { user, logout } = authStore((state) => state);
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   if (!user) return null;
 
@@ -18,6 +20,7 @@ export default function ProfilePage() {
     openConfirm(
       '로그아웃 하시겠어요?',
       () => {
+        queryClient.clear();
         logout();
         navigate('/auth', { replace: true });
       },

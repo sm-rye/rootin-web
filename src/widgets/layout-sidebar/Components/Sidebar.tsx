@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { MdLogout, MdPerson } from 'react-icons/md';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { authStore } from '@/entities/auth/model/store';
 import { NAV_ITEMS } from '@/shared/constants/navigation';
@@ -8,10 +9,12 @@ import SidebarProgress from './SidebarProgress';
 export default function Sidebar() {
   const { user, logout } = authStore((state) => state);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   if (!user) return null;
 
   const handleLogout = () => {
+    queryClient.clear();
     logout();
     navigate('/auth', { replace: true });
   };
@@ -44,7 +47,9 @@ export default function Sidebar() {
           to="/profile"
           className={({ isActive }) =>
             `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-              isActive ? 'bg-primary text-white' : 'text-gray-600 hover:bg-gray-100'
+              isActive
+                ? 'bg-primary text-white'
+                : 'text-gray-600 hover:bg-gray-100'
             }`
           }
         >
@@ -54,23 +59,25 @@ export default function Sidebar() {
       </nav>
 
       {/* 하단: 프로필 + 로그아웃 */}
-      <div className="mt-auto border-t border-gray-200 pt-4 flex flex-col ">
+      <div className="mt-auto border-t border-gray-200 pt-4 flex justify-between">
         <div className="mb-1">
           <p className="text-sm font-semibold text-gray-800">
             {user.nickname || user.email}
           </p>
-          {user.nickname && (
-            <p className="text-xs text-gray-500">{user.email}</p>
-          )}
         </div>
-        <div className="flex items-center justify-end  text-sm">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100 transition-colors"
-          >
-            <MdLogout size={15} />
-            로그아웃
-          </button>
+        <div className="flex items-center justify-end">
+          <div className="relative group">
+            <button
+              onClick={handleLogout}
+              aria-label="로그아웃"
+              className="p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+            >
+              <MdLogout size={18} />
+            </button>
+            <span className="absolute bottom-full right-0 mb-1.5 px-2 py-1 text-xs text-white bg-gray-700 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              로그아웃
+            </span>
+          </div>
         </div>
       </div>
     </div>
