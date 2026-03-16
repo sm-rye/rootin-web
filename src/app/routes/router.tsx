@@ -6,6 +6,7 @@ import {
   RoutineDetailPage,
   AuthPage,
   ProfilePage,
+  NotFoundPage,
 } from '@/Pages';
 
 import BaseLayout from '../Layouts/BaseLayout';
@@ -35,4 +36,5 @@ export const router = createBrowserRouter([
     ],
   },
   { path: '/auth', element: <AuthPage /> },
+  { path: '*', element: <NotFoundPage /> },
 ]);

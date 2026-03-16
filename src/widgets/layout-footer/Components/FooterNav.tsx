@@ -1,8 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import { MdPerson } from 'react-icons/md';
 import { NAV_ITEMS } from '@/shared/constants/navigation';
+import { useProfileSheetStore } from '@/shared/model/useProfileSheetStore';
 
 export default function FooterNav() {
+  const { isOpen, open } = useProfileSheetStore();
+
   return (
     <footer className="bg-white border-t border-gray-200 shadow-sm">
       <nav className="flex justify-around">
@@ -23,17 +26,15 @@ export default function FooterNav() {
             {label}
           </NavLink>
         ))}
-        <NavLink
-          to="/profile"
-          className={({ isActive }) =>
-            `flex flex-col items-center gap-0.5 py-2 px-4 text-xs transition-colors ${
-              isActive ? 'text-primary' : 'text-gray-400 hover:text-gray-600'
-            }`
-          }
+        <button
+          onClick={open}
+          className={`flex flex-col items-center gap-0.5 py-2 px-4 text-xs transition-colors ${
+            isOpen ? 'text-primary' : 'text-gray-400 hover:text-gray-600'
+          }`}
         >
           <MdPerson size={22} />
           프로필
-        </NavLink>
+        </button>
       </nav>
     </footer>
   );

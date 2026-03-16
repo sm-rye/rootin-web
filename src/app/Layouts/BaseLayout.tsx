@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Header } from '@/widgets/layout-header';
-import { FooterNav } from '@/widgets/layout-footer';
+import { FooterNav, ProfileBottomSheet } from '@/widgets/layout-footer';
 import { Sidebar } from '@/widgets/layout-sidebar';
 
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -56,6 +56,7 @@ export default function BaseLayout() {
       </footer>
       <Toast />
       <ConfirmModal />
+      <ProfileBottomSheet />
     </div>
   );
 }

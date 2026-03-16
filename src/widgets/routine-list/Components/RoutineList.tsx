@@ -25,7 +25,7 @@ export default function RoutineList({
   }, []);
 
   const handleRoutineClick = (id: number) => {
-    navigate(`${id}`);
+    navigate(`/routines/${id}`);
   };
 
   if (routines.length <= 0) {
