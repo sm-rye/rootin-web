@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Header } from '@/widgets/layout-header';
 import { FooterNav, ProfileBottomSheet } from '@/widgets/layout-footer';
 import { Sidebar } from '@/widgets/layout-sidebar';
+import { GuestBanner } from '@/widgets/guest-banner';
 
 import { Outlet, useNavigate } from 'react-router-dom';
 
@@ -38,6 +39,7 @@ export default function BaseLayout() {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
+      <GuestBanner />
       <Header onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
       <div className="flex-1 flex min-h-0">
         <aside

@@ -18,3 +18,8 @@ export const signup = async (signupInfo: Auth): Promise<AuthResponse> => {
   });
   return data;
 };
+
+export const guestLogin = async (): Promise<AuthResponse> => {
+  const { data } = await api.post<AuthResponse>(`${ENDPOINTS.AUTH}/guest`);
+  return data;
+};

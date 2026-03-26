@@ -8,6 +8,7 @@ export type AuthMode = 'login' | 'signup';
 
 export type User = {
   user_id: number;
+  is_guest?: boolean;
 } & Auth;
 
 export interface AuthResponse {
