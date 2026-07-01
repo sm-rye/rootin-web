@@ -3,7 +3,7 @@
 > 습관 형성을 도와주는 루틴 트래킹 웹앱.
 > 매일 수행할 태스크를 루틴으로 묶어 관리하고, 링 캘린더로 달성률을 시각화한다.
 
-**[🚀 데모 보기](https://react-monorepo-rootin.vercel.app/auth)** &nbsp;|&nbsp; **[서버 레포](https://github.com/mirea-shin/rootin-server)**
+~~**[🚀 데모 보기](https://react-monorepo-rootin.vercel.app/auth)** &nbsp;|&nbsp; **[서버 레포](https://github.com/mirea-shin/rootin-server)**~~
 
 ---
 
