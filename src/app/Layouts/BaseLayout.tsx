@@ -43,8 +43,10 @@ export default function BaseLayout() {
       <Header onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
       <div className="flex-1 flex min-h-0">
         <aside
-          className={`hidden md:block overflow-hidden transition-all duration-300 ease-in-out ${
-            sidebarOpen ? 'w-64 border-r border-gray-200' : 'w-0'
+          className={`hidden md:block overflow-hidden transition-all duration-300 ease-in-out  ${
+            sidebarOpen
+              ? 'w-64 border-r border-gray-200'
+              : 'w-0 whitespace-nowrap'
           }`}
         >
           <Sidebar />
