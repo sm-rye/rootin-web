@@ -5,7 +5,7 @@ interface LabelProps {
 
 export default function Label({ inputId = '', inputName }: LabelProps) {
   return (
-    <label htmlFor={inputId} className="text-lg text-primary-black">
+    <label htmlFor={inputId} className="text-sm text-primary-black">
       {inputName}
     </label>
   );

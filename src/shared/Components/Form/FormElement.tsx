@@ -5,7 +5,7 @@ export default function FormElement({
   children,
 }: {
   hasMargin?: boolean | undefined;
-  children: React.ReactElement;
+  children: React.ReactNode;
 }) {
   return (
     <div className={`flex flex-col gap-y-3  ${hasMargin && 'mb-8'}`}>

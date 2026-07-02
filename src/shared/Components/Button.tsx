@@ -32,21 +32,20 @@ export default function Button({
       success: 'bg-green-600 text-white hover:bg-green-700',
     },
     outline: {
-      primary: 'border-2 border-primary text-primary hover:bg-primary-50',
-      secondary: 'border-2 border-gray-600 text-gray-600 hover:bg-gray-50',
-      danger: 'border-2 border-red-600 text-red-600 hover:bg-red-50',
-      success: 'border-2 border-green-600 text-green-600 hover:bg-green-50',
+      primary: 'border border-primary text-primary hover:bg-primary-50',
+      secondary: 'border border-gray-600 text-gray-600 hover:bg-gray-50',
+      danger: 'border border-red-600 text-red-600 hover:bg-red-50',
+      success: 'border border-green-600 text-green-600 hover:bg-green-50',
     },
     dashed: {
       primary:
-        'border-1 border-dashed border-primary text-primary hover:bg-primary-50',
-      secondary: 'border-2 border-gray-600 text-gray-600 hover:bg-gray-50',
-      danger: 'border-2 border-red-600 text-red-600 hover:bg-red-50',
-      success: 'border-2 border-green-600 text-green-600 hover:bg-green-50',
+        'border border-dashed border-primary text-primary hover:bg-primary-50',
+      secondary: 'border border-gray-600 text-gray-600 hover:bg-gray-50',
+      danger: 'border border-red-600 text-red-600 hover:bg-red-50',
+      success: 'border border-green-600 text-green-600 hover:bg-green-50',
     },
     ghost: {
-      primary:
-        'text-primary hover:bg-primary hover:text-white',
+      primary: 'text-primary hover:bg-primary hover:text-white',
       secondary: 'text-gray-600 hover:bg-gray-50',
       danger: 'text-red-600 hover:bg-red-50',
       success: 'text-green-600 hover:bg-green-50',

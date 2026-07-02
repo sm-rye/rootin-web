@@ -43,36 +43,37 @@ export default function Input({
 }: InputProps) {
   return (
     <FormElement hasMargin={Boolean(inputName)}>
-      <>
-        {inputName && <Label inputId={inputId} inputName={inputName} />}
-        <div className="relative flex items-center gap-2">
-          <input
-            readOnly={readOnly}
-            type={type}
-            id={inputId}
-            placeholder={placeHolder || ''}
-            className={`border p-2 rounded-sm text-primary-black focus:border-gray-400 ${error ? 'border-red-400' : 'border-gray-300'} ${type === 'text' && !endAdornment && 'flex-1 w-full'} ${endAdornment ? 'pr-9' : ''} ${className}`}
-            onChange={(e) => onChange?.(e)}
-            onClick={() => onClick?.()}
-            onWheel={type === 'number' ? (e) => e.currentTarget.blur() : undefined}
-            value={value}
-            maxLength={maxLength}
-            min={numLength?.min}
-            max={numLength?.max}
-          />
-          {endAdornment && (
-            <span className="absolute right-2 flex items-center">
-              {endAdornment}
-            </span>
-          )}
-          {inputNextText && <p>{inputNextText}</p>}
-        </div>
+      {inputName && <Label inputId={inputId} inputName={inputName} />}
+      <div className="relative flex items-center gap-1 text-sm">
+        <input
+          readOnly={readOnly}
+          type={type}
+          id={inputId}
+          placeholder={placeHolder || ''}
+          className={`border px-4 py-3 rounded-lg text-primary-black focus:border-gray-400 ${error ? 'border-red-400' : 'border-gray-300'} ${type === 'text' && !endAdornment && 'flex-1 w-full'} ${endAdornment ? 'pr-9' : ''} ${className} text-sm`}
+          onChange={(e) => onChange?.(e)}
+          onClick={() => onClick?.()}
+          onWheel={
+            type === 'number' ? (e) => e.currentTarget.blur() : undefined
+          }
+          value={value}
+          maxLength={maxLength}
+          min={numLength?.min}
+          max={numLength?.max}
+        />
+        {endAdornment && (
+          <span className="absolute right-2 flex items-center">
+            {endAdornment}
+          </span>
+        )}
+        {inputNextText && <p>{inputNextText}</p>}
+      </div>
 
-        {error
-          ? <p className="mt-1 text-xs text-red-500">{error}</p>
-          : helperText && <InfoText text={helperText} />
-        }
-      </>
+      {error ? (
+        <p className="mt-0 text-xs text-red-500">{error}</p>
+      ) : (
+        helperText && <InfoText text={helperText} />
+      )}
     </FormElement>
   );
 }

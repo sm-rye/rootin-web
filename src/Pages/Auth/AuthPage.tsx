@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import type { AuthMode } from '@/entities/auth';
 import AuthForm from '@/features/auth/Components/AuthForm';
-import { ConfirmModal, Toast, Button } from '@/shared/Components';
-import useGuestAuth from '@/features/auth/model/useGuestAuth';
+import { ConfirmModal, Toast } from '@/shared/Components';
 
 export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('login');
-  const { mutate: startGuest, isPending: isGuestPending } = useGuestAuth();
 
   const handleAuthMode = () => setMode(mode === 'signup' ? 'login' : 'signup');
 
@@ -32,19 +30,6 @@ export default function AuthPage() {
 
           <div className="w-full">
             <AuthForm mode={mode} handleAuthMode={handleAuthMode} />
-          </div>
-
-          <div className="flex justify-center">
-            <Button
-              variant="link"
-              colorScheme="secondary"
-              size="sm"
-              onClick={() => startGuest()}
-              isLoading={isGuestPending}
-              disabled={isGuestPending}
-            >
-              게스트로 체험하기
-            </Button>
           </div>
         </div>
       </div>

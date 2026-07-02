@@ -7,11 +7,9 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { LuEye, LuEyeOff } from 'react-icons/lu';
 import { useConfirmStore } from '@/shared/model/useConfirmStore';
 
-import {
-  validatePassword,
-  validateEmail,
-  validateNickname,
-} from '../lib/validation';
+import { CiUser } from 'react-icons/ci';
+
+import useGuestAuth from '@/features/auth/model/useGuestAuth';
 
 export default function AuthForm({
   mode,
@@ -24,14 +22,15 @@ export default function AuthForm({
   const [showPassword, setShowPassword] = useState(false);
   const openConfirm = useConfirmStore((s) => s.openConfirm);
 
+  const { mutate: startGuest, isPending: isGuestPending } = useGuestAuth();
+
   const {
     authFormData,
     error,
-
+    validatedForm,
+    validateFormData,
     onChangeAuthInput,
-    removeNickname,
-    setAuthFormData,
-    setError,
+    resetData,
   } = useAuthForm();
 
   const { mutate, isPending, isError, error: responseErr } = useAuth();
@@ -39,25 +38,10 @@ export default function AuthForm({
   const handleAuthSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { email, password, nickname } = authFormData;
+    const isAllValid = validateFormData(isSignup);
 
-    // 1. 이메일과 비밀번호의 유효성 검사를 진행한다. (+ 회원가입일 경우 닉네임의 유효성검사를 진행한다)
-    const validatedEmail = validateEmail(email);
-    const validatedPassword = validatePassword(password);
-    const validatedNickname = isSignup ? validateNickname(nickname) : '';
+    if (!isAllValid) return;
 
-    // 2. 유효성 검사 결과를 에러 상태값에 셋팅한다
-    // - 에러가 있을 경우 메시지 셋팅
-    // - 에러가 없을 경우 빈 스트링
-    setError({
-      email: validatedEmail,
-      password: validatedPassword,
-      nickname: validatedNickname,
-    });
-
-    // 3. 유효성 검사 실패 ? 함수리턴 : 뮤테이션 함수 실행
-    if (validatedEmail || validatedPassword || (isSignup && validatedNickname))
-      return;
     mutate({
       mode,
       formData: authFormData,
@@ -77,20 +61,20 @@ export default function AuthForm({
       )}
       <fieldset
         disabled={isPending}
-        className={`w-full flex flex-col items-center transition-all duration-300  ${isPending ? 'pointer-events-none opacity-90 blur-[0.5px]' : ''}`}
+        className={`w-full flex flex-col  items-center transition-all duration-300  ${isPending ? 'pointer-events-none opacity-90 blur-[0.5px]' : ''}`}
       >
         <Input
-          inputName="Email"
+          inputName="이메일"
           inputId="email"
           onChange={onChangeAuthInput}
           value={authFormData.email}
           type="email"
-          className="w-80"
-          placeHolder="이메일을 입력해주세요"
-          error={error.email}
+          className="w-80 text-stone-700"
+          placeHolder="your@email.com"
+          error={validatedForm ? error.email : ''}
         />
         <Input
-          inputName="Password"
+          inputName="비밀번호"
           inputId="password"
           onChange={onChangeAuthInput}
           value={authFormData.password}
@@ -98,7 +82,7 @@ export default function AuthForm({
           type={showPassword ? 'text' : 'password'}
           className="w-80"
           placeHolder="비밀번호를 입력해주세요"
-          error={error.password}
+          error={validatedForm ? error.password : ''}
           endAdornment={
             <button
               type="button"
@@ -123,43 +107,81 @@ export default function AuthForm({
             value={authFormData.nickname}
             className="w-80!"
             placeHolder="닉네임을 입력해주세요"
-            error={error.nickname}
+            error={validatedForm ? error.nickname : ''}
           />
         )}
-        <div className="flex items-center gap-2  w-80">
-          <input
-            id="authModeCheckbox"
-            type="checkbox"
-            onChange={() => {
-              if (authFormData.nickname) {
-                openConfirm(
-                  '회원가입을 취소할 경우 닉네임 데이터는 사라집니다.',
-                  () => {
-                    removeNickname();
-                    handleAuthMode();
-                  },
-                  '취소하기',
-                );
-              } else {
-                if (!isSignup) {
-                  setAuthFormData((prev) => ({ ...prev, nickname: '' }));
-                }
-                handleAuthMode();
-              }
-            }}
-            className="w-4 h-4"
-            checked={isSignup}
-          />
-          <label htmlFor="authModeCheckbox">회원가입</label>
-        </div>
 
-        <div className="mt-10">
-          <Button className="flex justify-between items-center px-8 gap-x-3">
+        <div className="mt-1 w-full">
+          <Button className="flex justify-between items-center px-8 gap-x-3 w-full text-sm">
             <p>{isSignup ? '회원가입' : '로그인'}</p>
             {isPending && (
               <AiOutlineLoading3Quarters className="animate-spin " />
             )}
           </Button>
+        </div>
+
+        <div className="flex items-center gap-3 my-5 w-full">
+          <div className="h-px flex-1 bg-stone-200" />
+          <span className="text-xs text-stone-400">또는</span>
+          <div className="h-px flex-1 bg-stone-200" />
+        </div>
+
+        <div className="w-full ">
+          <Button
+            type="button"
+            variant="outline"
+            className=" border-stone-300 text-stone-500 text-sm hover:border-stone-400 w-full"
+            onClick={() => startGuest()}
+            isLoading={isGuestPending}
+            disabled={isGuestPending}
+          >
+            <div className="flex w-full h-full justify-center items-center gap-2">
+              <span className="text-xl">
+                <CiUser />
+              </span>
+              <span>게스트로 체험하기</span>
+            </div>
+          </Button>
+        </div>
+
+        <div className="text-sm my-2.5">
+          {isSignup ? (
+            <p>
+              <span>계정이 있으신가요? </span>
+              <Button
+                type="button"
+                variant="link"
+                size="sm"
+                onClick={() => {
+                  openConfirm(
+                    '회원가입을 취소할 경우 입력된 데이터는 사라집니다.',
+                    () => {
+                      resetData();
+                      handleAuthMode();
+                    },
+                    '확인',
+                  );
+                }}
+              >
+                로그인
+              </Button>
+            </p>
+          ) : (
+            <p>
+              <span>계정이 없으신가요? </span>
+              <Button
+                type="button"
+                variant="link"
+                size="sm"
+                onClick={() => {
+                  resetData();
+                  handleAuthMode();
+                }}
+              >
+                회원가입
+              </Button>
+            </p>
+          )}
         </div>
       </fieldset>
     </form>
