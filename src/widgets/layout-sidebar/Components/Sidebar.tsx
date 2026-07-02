@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { MdLogout, MdPerson } from 'react-icons/md';
+import { MdLogout } from 'react-icons/md';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { authStore } from '@/entities/auth/model/store';
@@ -43,19 +43,6 @@ export default function Sidebar() {
             {label}
           </NavLink>
         ))}
-        <NavLink
-          to="/profile"
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-              isActive
-                ? 'bg-primary text-white'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`
-          }
-        >
-          <MdPerson size={20} />
-          프로필
-        </NavLink>
       </nav>
 
       {/* 하단: 프로필 + 로그아웃 */}
