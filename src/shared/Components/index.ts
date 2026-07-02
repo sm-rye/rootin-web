@@ -22,4 +22,6 @@ import ConfirmModal from './ConfirmModal';
 
 import Pagination from './Pagination';
 
+export * from './Dashboard';
+
 export { Empty, Loading, Error, InfoText, Toast, ConfirmModal, Pagination };
