@@ -1,29 +1,20 @@
-import React from 'react';
-import { Card, DashBoardHeading } from '@/shared/Components';
+import {
+  SummaryCards,
+  TrendChart,
+  WeekdayChart,
+  HabitRateList,
+  StreakGrid,
+} from '@/widgets/dashboard';
 
 export default function DashboardPage() {
   return (
-    <div className="w-full h-full flex flex-col p-10">
-      <div>
-        <Card className="flex flex-col gap-y-4 p-2">
-          <DashBoardHeading mainText="연속 달성 기록" subText="최근 14일" />
-          <div>
-            <div>DashboardPage</div>
-          </div>
-        </Card>
-
-        <Card>2</Card>
-      </div>
-      <div>
-        <Card>3</Card>
-      </div>
-      <div>
-        <Card>4</Card>
-      </div>
-
-      <div>
-        <Card>5</Card>
-        <Card>6</Card>
+    <div className="w-full h-full overflow-y-auto">
+      <div className="flex flex-col gap-4 p-6">
+        <SummaryCards />
+        <TrendChart />
+        <WeekdayChart />
+        <HabitRateList />
+        <StreakGrid />
       </div>
     </div>
   );
