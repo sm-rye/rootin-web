@@ -16,6 +16,7 @@ export default function useUpdateRoutine() {
       queryClient.invalidateQueries({ queryKey: ['routines'] });
       queryClient.invalidateQueries({ queryKey: ['routines', String(id)] });
       queryClient.invalidateQueries({ queryKey: ['overall-summary'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard', 'summary'] });
       addToast('루틴이 수정되었습니다.', 'success');
       navigate(`/routines/${id}`);
     },
