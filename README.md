@@ -5,6 +5,14 @@
 
 **[🚀 데모 보기](https://react-monorepo-rootin-three.vercel.app/)** &nbsp;|&nbsp; **[서버 레포](https://github.com/mirea-shin/rootin-server)**
 
+### 📢 데모 안내
+
+현재 백엔드 서버는 **Render 무료 플랜**으로 배포되어 있습니다.
+
+- 일정 시간 요청이 없을 경우 서버가 절전 상태(Sleep)에 진입합니다.
+- 이로 인해 **첫 요청은 20~60초 정도 소요될 수 있습니다.**
+- 서버가 활성화된 이후에는 정상적인 응답 속도로 이용할 수 있습니다.
+
 ---
 
 ## 게스트 체험
