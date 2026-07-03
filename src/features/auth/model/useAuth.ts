@@ -22,6 +22,8 @@ export default function useAuth() {
       localStorage.setItem('token', token);
       // 이전 사용자의 캐시를 전부 초기화 (다른 계정으로 로그인 시 stale 데이터 노출 방지)
       queryClient.clear();
+      // 로그인 응답의 user를 cache에 심어 BaseLayout의 useGetMe 재호출 방지 (스플래시 제거)
+      queryClient.setQueryData(['user'], { user });
 
       //2. user 응답값 스토어 저장
       setAuth(user);

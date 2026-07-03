@@ -16,6 +16,7 @@ export default function useGuestAuth() {
       const { token, user } = data;
       localStorage.setItem('token', token);
       queryClient.clear();
+      queryClient.setQueryData(['user'], { user });
       setAuth(user);
       navigate('/routines', { replace: true });
     },
