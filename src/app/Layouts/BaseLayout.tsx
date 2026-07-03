@@ -9,6 +9,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 import { authStore, useGetMe } from '@/entities/auth';
 import { Toast, ConfirmModal } from '@/shared/Components';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 export default function BaseLayout() {
   const navigate = useNavigate();
@@ -34,7 +35,20 @@ export default function BaseLayout() {
   }, [isSuccess, isError, isFetching, data, setAuth, logout]);
 
   if (token && isLoading) {
-    return <div>사용자 정보를 불러오는 중...</div>;
+    return (
+      <div className="w-screen h-screen flex flex-col justify-center items-center">
+        <div className="blob blob1" />
+        <div className="blob blob2" />
+        <div className="blob blob3" />
+        <div className="z-50 flex flex-col items-center gap-3">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            Rootin
+          </h1>
+          <AiOutlineLoading3Quarters className="animate-spin text-xl text-primary" />
+          <p className="text-sm text-muted">잠시만 기다려주세요</p>
+        </div>
+      </div>
+    );
   }
 
   return (
