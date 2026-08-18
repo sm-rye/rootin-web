@@ -15,9 +15,7 @@ function ToastItem({
   duration: number;
 }) {
   const removeToast = useToastStore((s) => s.removeToast);
-  const [remaining, setRemaining] = useState(
-    Math.ceil((duration - (Date.now() - createdAt)) / 1000),
-  );
+  const [remaining, setRemaining] = useState(Math.ceil(duration / 1000));
 
   useEffect(() => {
     const interval = setInterval(() => {

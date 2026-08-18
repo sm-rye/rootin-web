@@ -4,6 +4,7 @@ import { login, signup } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { authStore } from '@/entities/auth/model/store';
 import { useToastStore } from '@/shared/model/useToastStore';
+import { isAxiosError } from 'axios';
 
 export default function useAuth() {
   const navigate = useNavigate();
@@ -32,9 +33,11 @@ export default function useAuth() {
       navigate('/routines', { replace: true });
     },
 
-    onError: (error: any) => {
-      const message =
-        error?.response?.data?.message || '인증에 실패했습니다. 다시 시도해주세요.';
+    onError: (error: unknown) => {
+      const fallbackMessage = '인증에 실패했습니다. 다시 시도해주세요.';
+      const message = isAxiosError<{ message?: string }>(error)
+        ? (error.response?.data?.message ?? fallbackMessage)
+        : fallbackMessage;
       addToast(message, 'error');
     },
   });

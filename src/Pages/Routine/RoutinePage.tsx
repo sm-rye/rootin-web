@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoMdSearch } from 'react-icons/io';
 
@@ -34,14 +34,12 @@ export default function RoutinePage() {
     setPage(1);
   };
 
-  const displayedRoutines = useMemo(() => {
-    if (!data?.routines) return [];
-
-    if (!search.trim()) return data.routines;
-
-    const keyword = search.trim().toLowerCase();
-    return data.routines.filter((r) => r.title.toLowerCase().includes(keyword));
-  }, [data?.routines, search]);
+  const keyword = search.trim().toLowerCase();
+  const displayedRoutines = keyword
+    ? (data?.routines ?? []).filter((routine) =>
+        routine.title.toLowerCase().includes(keyword),
+      )
+    : (data?.routines ?? []);
 
   if (isLoading) return <Loading />;
   if (isError) return <Error />;

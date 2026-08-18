@@ -10,6 +10,7 @@ import { useConfirmStore } from '@/shared/model/useConfirmStore';
 import { CiUser } from 'react-icons/ci';
 
 import useGuestAuth from '@/features/auth/model/useGuestAuth';
+import { isAxiosError } from 'axios';
 
 export default function AuthForm({
   mode,
@@ -34,6 +35,9 @@ export default function AuthForm({
   } = useAuthForm();
 
   const { mutate, isPending, isError, error: responseErr } = useAuth();
+  const responseMessage = isAxiosError<{ message?: string }>(responseErr)
+    ? (responseErr.response?.data?.message ?? '인증에 실패했습니다.')
+    : '인증에 실패했습니다.';
 
   const handleAuthSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +60,7 @@ export default function AuthForm({
       {/* 에러가 발생했을 때만 메시지 노출 */}
       {isError && (
         <p className="text-red-500 text-sm absolute -top-7">
-          {responseErr.response?.data?.message || '인증에 실패했습니다.'}
+          {responseMessage}
         </p>
       )}
       <fieldset

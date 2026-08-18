@@ -9,8 +9,9 @@ export default function TaskStatusItem({
   name,
   disabled = false,
 }: Status & { date: string; name: string | undefined; disabled?: boolean }) {
-  if (!name) return <Empty />;
   const { mutate, isPending } = useToggleTask();
+
+  if (!name) return <Empty />;
 
   const isDisabled = disabled || isPending;
 

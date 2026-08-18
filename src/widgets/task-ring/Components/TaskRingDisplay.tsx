@@ -9,9 +9,7 @@ interface TaskRingDisplayProps {
   taskDailyStatus: DailyStatus[] | undefined;
   tasks: Task[] | undefined;
   selectedDayTaskStaus: DailyStatus | undefined;
-  setSelectedDayTaskStaus: React.Dispatch<
-    React.SetStateAction<DailyStatus | undefined>
-  >;
+  setSelectedDayTaskStaus: (status: DailyStatus | undefined) => void;
 }
 
 export default function TaskRingDisplay({

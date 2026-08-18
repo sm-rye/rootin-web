@@ -101,7 +101,7 @@ export default function UpdateRoutineForm({ routine }: { routine: Routine }) {
       setRoutineInfo({ ...routine });
       if (routine.tasks) setTasks(routine.tasks);
     }
-  }, [routine]);
+  }, [routine, setRoutineInfo, setTasks]);
 
   return (
     <form

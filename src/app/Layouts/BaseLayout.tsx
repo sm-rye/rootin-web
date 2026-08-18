@@ -32,7 +32,7 @@ export default function BaseLayout() {
       logout();
       navigate('/auth', { replace: true });
     }
-  }, [isSuccess, isError, isFetching, data, setAuth, logout]);
+  }, [isSuccess, isError, isFetching, data, setAuth, logout, navigate, token]);
 
   if (token && isLoading) {
     return (
