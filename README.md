@@ -30,6 +30,14 @@
 
 ---
 
+## 제품 화면
+
+![Rootin 대시보드 — 루틴 달성률, 링 캘린더, 오늘의 체크리스트](docs/rootin-dashboard.png)
+
+루틴의 전체 달성률과 날짜별 수행 기록, 오늘의 체크리스트를 한 화면에서 확인할 수 있도록 구성했습니다.
+
+---
+
 ## 주요 기능
 
 | 기능 | 설명 |
@@ -72,16 +80,17 @@
 
 ## 시스템 구조
 
+```mermaid
+flowchart LR
+    U[사용자] --> W[React SPA<br/>Vercel]
+    W -->|REST API · JWT| A[Express 5 API<br/>Render]
+    A --> P[Prisma]
+    P --> D[(PostgreSQL<br/>Neon)]
+    W -->|서버 상태| Q[TanStack Query]
+    W -->|인증·UI 상태| Z[Zustand]
 ```
-Vercel (React SPA)
-       │
-       │  REST API (JSON)
-       ▼
-Render (Express 5 + Prisma)
-       │
-       ▼
-PostgreSQL (Neon)
-```
+
+서버 데이터와 로딩·오류·무효화는 TanStack Query가 담당하고, 인증 토큰과 UI 상태는 Zustand로 분리했습니다. 인증 전환 시 Query Client를 초기화해 사용자별 캐시가 섞이지 않도록 구성했습니다.
 
 ---
 
