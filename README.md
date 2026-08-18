@@ -1,5 +1,7 @@
 # Rootin — 루틴 트래킹 웹앱
 
+[![CI](https://github.com/sm-rye/rootin-web/actions/workflows/ci.yml/badge.svg)](https://github.com/sm-rye/rootin-web/actions/workflows/ci.yml)
+
 > 반복할 행동을 루틴과 태스크로 구조화하고, 날짜별 수행 기록과 달성 추이를 시각화하는 웹앱입니다.
 
 **[🚀 데모 보기](https://react-monorepo-rootin-three.vercel.app/)** &nbsp;|&nbsp; **[서버 저장소](https://github.com/sm-rye/rootin-server)**
